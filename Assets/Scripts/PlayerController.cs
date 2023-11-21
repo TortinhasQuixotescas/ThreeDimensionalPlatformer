@@ -16,7 +16,9 @@ public class PlayerController : MonoBehaviour
     private Vector3 movementVector;
     private float ySpeed;
     private float auxSpeed;
-    private bool isJumping; // Added variable to track jump state
+    private bool isJumping;
+    private float idleTimer;
+    private int idleThreshold = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +30,8 @@ public class PlayerController : MonoBehaviour
     {
         uniqueInstance = this;
         charController = GetComponent<CharacterController>();
-        isJumping = false; // Initialize isJumping to false
+        isJumping = false;
+        idleTimer = 0f;
     }
 
     // Update is called once per frame
@@ -43,6 +46,20 @@ public class PlayerController : MonoBehaviour
         {
             Quaternion aux = Quaternion.LookRotation(movementVector);
             transform.rotation = Quaternion.Slerp(transform.rotation, aux, rotateSpeed * Time.deltaTime);
+            idleTimer = 0f;
+        }
+        else
+        {
+            idleTimer += Time.deltaTime;
+            if (idleTimer >= idleThreshold)
+            {
+                playerAnimator.SetBool("Rest", true);
+                idleTimer = 0f;
+            }
+            else
+                playerAnimator.SetBool("Rest", false);
+
+
         }
 
         movementVector.y = ySpeed;
@@ -56,20 +73,18 @@ public class PlayerController : MonoBehaviour
         charController.Move(Time.deltaTime * new Vector3(movementVector.x * moveSpeed, movementVector.y, movementVector.z * moveSpeed));
         auxSpeed = new Vector3(movementVector.x, 0, movementVector.z).magnitude * moveSpeed;
         playerAnimator.SetFloat("Speed", auxSpeed);
-        playerAnimator.SetFloat("yVel", movementVector.y);
         playerAnimator.SetBool("Jump", isJumping);
     }
 
     void FixedUpdate()
     {
         if (!charController.isGrounded)
-        {
             movementVector.y += Physics.gravity.y * gravityMult * Time.deltaTime;
-        }
         else
         {
             movementVector.y = Physics.gravity.y * gravityMult * Time.deltaTime;
             isJumping = false;
         }
     }
+
 }
