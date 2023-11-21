@@ -5,8 +5,8 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public Transform player;
-    public float verticalDistanceToPlayer = 5;
-    public float horizontalDistanceToPlayer = 6;
+    public float verticalDistanceToPlayer = 1.5f;
+    public float horizontalDistanceToPlayer = 3;
     // Start is called before the first frame update
     void Start()
     {
