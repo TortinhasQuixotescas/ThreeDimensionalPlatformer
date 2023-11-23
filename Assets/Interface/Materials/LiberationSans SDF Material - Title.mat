@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ButtonMaterial
+  m_Name: LiberationSans SDF Material - Title
   m_Shader: {fileID: 4800000, guid: fe393ace9b354375a9cb14cdbbc28be4, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -38,7 +38,7 @@ Material:
     - _MaskSoftnessX: 0
     - _MaskSoftnessY: 0
     - _OutlineSoftness: 0
-    - _OutlineWidth: 0.05
+    - _OutlineWidth: 0.128
     - _PerspectiveFilter: 0.875
     - _ScaleRatioA: 0.9
     - _ScaleRatioB: 1
@@ -55,7 +55,7 @@ Material:
     - _TextureHeight: 1024
     - _TextureWidth: 1024
     - _UnderlayDilate: 0.6
-    - _UnderlayOffsetX: 1
+    - _UnderlayOffsetX: 0.5
     - _UnderlayOffsetY: 0.3
     - _UnderlaySoftness: 0
     - _VertexOffsetX: 0
@@ -64,7 +64,7 @@ Material:
     - _WeightNormal: 0
     m_Colors:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
-    - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColor: {r: 0.5865966, g: 0.5990343, b: 0.735849, a: 1}
-    - _UnderlayColor: {r: 0.14535984, g: 0.14219917, b: 0.39150944, a: 0.6862745}
+    - _FaceColor: {r: 0.13777144, g: 0.13912688, b: 0.2264151, a: 1}
+    - _OutlineColor: {r: 0.065592736, g: 0.07998149, b: 0.20754719, a: 1}
+    - _UnderlayColor: {r: 0.09878961, g: 0.10379039, b: 0.5660378, a: 0.5}
   m_BuildTextureStacks: []
