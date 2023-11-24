@@ -13,16 +13,15 @@ public class PlayerInterfaceController : MonoBehaviour
     public Sprite fullHeartSprite;
     public Sprite halfHeartSprite;
     public Sprite emptyHeartSprite;
-    public int currentCoins = 0;
-    public int currentHealth = 6;
-    private int maxHealh = 6;
     private List<Image> hearts;
 
     private void Start()
     {
+        this.hearts = new List<Image>();
         this.coinsTMPText = coinsPanel.transform.GetChild(2).GetComponent<TMP_Text>();
-        this.coinsTMPText.SetText(this.currentCoins.ToString().PadLeft(6, '0'));
-        for (int i = 0; i < this.maxHealh / 2; i++)
+        this.coinsTMPText.SetText(MainManager.Instance.playerData.GetCoinsQuantity().ToString().PadLeft(6, '0'));
+        int heartsNumber = MainManager.Instance.playerData.GetMaxHealthValue() / 2;
+        for (int i = 0; i < heartsNumber; i++)
         {
             GameObject heart = Instantiate(fullHeartPrefab);
             heart.transform.SetParent(livesPanel.transform, false);
@@ -33,8 +32,8 @@ public class PlayerInterfaceController : MonoBehaviour
 
     private void Update()
     {
-        this.UpdateHearts(this.currentHealth);
-        this.coinsTMPText.SetText(this.currentCoins.ToString().PadLeft(6, '0'));
+        this.UpdateHearts(MainManager.Instance.playerData.GetHealthValue());
+        this.coinsTMPText.SetText(MainManager.Instance.playerData.GetCoinsQuantity().ToString().PadLeft(6, '0'));
     }
 
     public void ShowFinishGamePanel(bool victory)
@@ -44,16 +43,16 @@ public class PlayerInterfaceController : MonoBehaviour
         // this.FinishGamePanel.SetActive(true);
     }
 
-    private void UpdateHearts(int health)
+    private void UpdateHearts(int currentHealth)
     {
         for (int i = 0; i < hearts.Count; i++)
         {
             int livesToBeFull = (i + 1) * 2;
-            if (health >= livesToBeFull)
+            if (currentHealth >= livesToBeFull)
             {
                 hearts[i].sprite = fullHeartSprite;
             }
-            else if (health == livesToBeFull - 1)
+            else if (currentHealth == livesToBeFull - 1)
             {
                 hearts[i].sprite = halfHeartSprite;
             }

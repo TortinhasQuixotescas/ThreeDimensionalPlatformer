@@ -250,7 +250,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1280, y: 720}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -315,12 +315,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   livesPanel: {fileID: 694392905}
   coinsPanel: {fileID: 673744252}
-  fullHeartPrefab: {fileID: 7468401657078263915, guid: 9d5850a686565a6f78630c3d19ab5672, type: 3}
+  fullHeartPrefab: {fileID: 6677065195800350868, guid: 0336f7931603148e5975704041c63764, type: 3}
   fullHeartSprite: {fileID: -487632683, guid: 99308407e743d1f668d4872034301c34, type: 3}
   halfHeartSprite: {fileID: 21300000, guid: 96495a377a0ed95ffa19f453ed75fde7, type: 3}
   emptyHeartSprite: {fileID: 21300000, guid: 21e8c3fad9b969ba7a44d270cf65f4b3, type: 3}
   currentCoins: 0
   currentHealth: 6
+  maxHealh: 6
 --- !u!1 &673744252
 GameObject:
   m_ObjectHideFlags: 0
