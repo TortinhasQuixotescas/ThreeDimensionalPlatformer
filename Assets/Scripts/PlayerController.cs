@@ -19,15 +19,20 @@ public class PlayerController : MonoBehaviour
     private bool isJumping;
     private float idleTimer;
     private int idleThreshold = 10;
+    private bool lastGrounded;
+    public GameObject jumpParticle;
+    public GameObject landingParticle;
 
     // Start is called before the first frame update
     void Start()
     {
         camController = FindObjectOfType<CameraController>();
+        lastGrounded = true;
     }
 
     private void Awake()
     {
+        UIController.uniqueInstance.FadeIn();
         uniqueInstance = this;
         charController = GetComponent<CharacterController>();
         isJumping = false;
@@ -64,12 +69,20 @@ public class PlayerController : MonoBehaviour
 
         movementVector.y = ySpeed;
 
-        if (Input.GetButtonDown("Jump") && charController.isGrounded)
+        if (charController.isGrounded)
         {
-            isJumping = true;
-            movementVector.y = jumpSpeed;
+            jumpParticle.SetActive(false);
+            if (!lastGrounded)
+                landingParticle.SetActive(true);
+            if (Input.GetButtonDown("Jump"))
+            {
+                isJumping = true;
+                movementVector.y = jumpSpeed;
+                jumpParticle.SetActive(true);
+                idleTimer = 0f;
+            }
         }
-
+        lastGrounded = charController.isGrounded;
         charController.Move(Time.deltaTime * new Vector3(movementVector.x * moveSpeed, movementVector.y, movementVector.z * moveSpeed));
         auxSpeed = new Vector3(movementVector.x, 0, movementVector.z).magnitude * moveSpeed;
         playerAnimator.SetFloat("Speed", auxSpeed);

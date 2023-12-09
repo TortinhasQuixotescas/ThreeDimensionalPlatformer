@@ -17,6 +17,7 @@ public class CameraController : MonoBehaviour
     private Vector3 lastMousePosition;
     private Quaternion initialRotation;
     private CharacterController characterController;
+    public GameObject lowestStagePoint;
 
     void Start()
     {
@@ -27,54 +28,63 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (player.transform.position.y >= lowestStagePoint.transform.position.y - 1)
         {
-            isRightMouseButtonDown = true;
-            lastMousePosition = Input.mousePosition;
-        }
-        else if (Input.GetMouseButtonUp(1))
-        {
-            isRightMouseButtonDown = false;
-            StartCoroutine(ReturnToInitialRotation());
-        }
+            if (Input.GetMouseButtonDown(1))
+            {
+                isRightMouseButtonDown = true;
+                lastMousePosition = Input.mousePosition;
+            }
+            else if (Input.GetMouseButtonUp(1))
+            {
+                isRightMouseButtonDown = false;
+                StartCoroutine(ReturnToInitialRotation());
+            }
 
-        if (isRightMouseButtonDown)
-        {
-            float mouseX = Input.mousePosition.x - lastMousePosition.x;
-            float mouseY = Input.mousePosition.y - lastMousePosition.y;
+            if (isRightMouseButtonDown)
+            {
+                float mouseX = Input.mousePosition.x - lastMousePosition.x;
+                float mouseY = Input.mousePosition.y - lastMousePosition.y;
 
-            transform.RotateAround(player.position, Vector3.up, mouseX * rotationSpeed * Time.deltaTime);
-            transform.RotateAround(player.position, transform.right, -mouseY * 2 * rotationSpeed * Time.deltaTime);
+                transform.RotateAround(player.position, Vector3.up, mouseX * rotationSpeed * Time.deltaTime);
+                transform.RotateAround(player.position, transform.right, -mouseY * 2 * rotationSpeed * Time.deltaTime);
 
-            lastMousePosition = Input.mousePosition;
-        }
+                lastMousePosition = Input.mousePosition;
+            }
 
-        Vector3 defaultPosition = new Vector3(player.position.x, player.position.y + verticalDistanceToPlayer, player.position.z - horizontalDistanceToPlayer);
+            Vector3 defaultPosition = new Vector3(player.position.x, player.position.y + verticalDistanceToPlayer, player.position.z - horizontalDistanceToPlayer);
 
-        bool isVerticalMovement = Mathf.Abs(characterController.velocity.y) > 0.1f;
+            bool isVerticalMovement = Mathf.Abs(characterController.velocity.y) > 0.1f;
 
-        if (isVerticalMovement)
-        {
-            float currentLerpSpeed = characterController.isGrounded ? groundLerpSpeed : airborneLerpSpeed;
-            transform.position = Vector3.Lerp(transform.position, defaultPosition, Time.deltaTime * currentLerpSpeed);
-        }
-        else if (Physics.Raycast(player.position, (defaultPosition - player.position).normalized, out hit, oclusionRaycastDistance))
-        {
-            Vector3 targetPosition = hit.point;
-            targetPosition.y = player.position.y + verticalDistanceToPlayer;
-            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * groundLerpSpeed);
-            occlusionOccurring = true;
-        }
-        else if (occlusionOccurring)
-        {
-            Vector3 targetPosition = defaultPosition;
-            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * groundLerpSpeed);
+            if (isVerticalMovement)
+            {
+                float currentLerpSpeed = characterController.isGrounded ? groundLerpSpeed : airborneLerpSpeed;
+                transform.position = Vector3.Lerp(transform.position, defaultPosition, Time.deltaTime * currentLerpSpeed);
+            }
+            else if (Physics.Raycast(player.position, (defaultPosition - player.position).normalized, out hit, oclusionRaycastDistance))
+            {
+                Vector3 targetPosition = hit.point;
+                targetPosition.y = player.position.y + verticalDistanceToPlayer;
+                transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * groundLerpSpeed);
+                occlusionOccurring = true;
+            }
+            else if (occlusionOccurring)
+            {
+                Vector3 targetPosition = defaultPosition;
+                transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * groundLerpSpeed);
 
-            transform.rotation = Quaternion.Lerp(transform.rotation, initialRotation, Time.deltaTime * slerpSpeed);
+                transform.rotation = Quaternion.Lerp(transform.rotation, initialRotation, Time.deltaTime * slerpSpeed);
+            }
+            else
+                transform.position = Vector3.Lerp(transform.position, defaultPosition, Time.deltaTime * groundLerpSpeed);
         }
         else
-            transform.position = Vector3.Lerp(transform.position, defaultPosition, Time.deltaTime * groundLerpSpeed);
+        {
+            Vector3 cameraLowestPosition = new Vector3(transform.position.x, lowestStagePoint.transform.position.y + 1, transform.position.z);
+            transform.position = cameraLowestPosition;
+        }
     }
+
 
     IEnumerator ReturnToInitialRotation()
     {
