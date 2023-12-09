@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44658214, g: 0.4964161, b: 0.57481986, a: 1}
+  m_IndirectSpecularColor: {r: 0.44658262, g: 0.4964168, b: 0.57482046, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -220,7 +220,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: 0.0045166016}
+  m_AnchoredPosition: {x: -0.00012207031, y: 0.0045166016}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &247449428
@@ -6042,7 +6042,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62954faf4b260beaf9d134a4199a3df9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  healthTaken: 1
 --- !u!135 &1344488850
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6130,10 +6130,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07fff25e557ae7144b8bb466bb71decb, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1468396640}
+      addedObject: {fileID: 1468396639}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07fff25e557ae7144b8bb466bb71decb, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1468396639}
+      addedObject: {fileID: 1468396644}
   m_SourcePrefab: {fileID: 100100000, guid: 07fff25e557ae7144b8bb466bb71decb, type: 3}
 --- !u!1 &1468396638 stripped
 GameObject:
@@ -6161,7 +6161,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.010000001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1468396640
+--- !u!114 &1468396644
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6170,10 +6170,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1468396638}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62954faf4b260beaf9d134a4199a3df9, type: 3}
+  m_Script: {fileID: 11500000, guid: b5ffa7d596a1bc37bb950e60ad829043, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  coinsGiven: 10
+  maximumIterations: 1
 --- !u!1001 &1471474859
 PrefabInstance:
   m_ObjectHideFlags: 0
