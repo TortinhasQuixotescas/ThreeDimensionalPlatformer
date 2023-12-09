@@ -33,6 +33,7 @@ public class PlayerData
         if (this.health.IsEmpty())
         {
             MainManager.Instance.FinishGame(false);
+            // LevelManager.uniqueInstance.Respawn();
         }
     }
 
