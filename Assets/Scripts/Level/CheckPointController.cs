@@ -1,16 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CheckPointController : MonoBehaviour
 {
     public CharacterController player;
-    private List<GameObject> checkPoints;
+    private List<GameObject> visitedCheckPoints;
 
     void Start()
     {
         player = FindObjectOfType<CharacterController>();
-        checkPoints = new List<GameObject>();
+        visitedCheckPoints = new List<GameObject>();
 
         // Desativa o décimo filho inicialmente
         Transform tenthChild = transform.GetChild(7); // Assumindo que o décimo filho está na posição 7 da lista de filhos
@@ -19,9 +18,9 @@ public class CheckPointController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !checkPoints.Contains(this.gameObject))
+        if (other.CompareTag("Player") && !visitedCheckPoints.Contains(this.gameObject))
         {
-            checkPoints.Add(this.gameObject);
+            visitedCheckPoints.Add(this.gameObject);
             this.gameObject.tag = "CheckPoint";
 
             // Ativa o décimo filho quando o jogador colidir

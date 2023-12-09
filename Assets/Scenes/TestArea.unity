@@ -159,6 +159,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 6
+  player: {fileID: 0}
+  healingCost: 7
+  respawning: 0
+  respawnDelay: 0.5
 --- !u!114 &182463501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,53 +322,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 319fece800e21780a9bd742c4b8d7d46, type: 3}
---- !u!1 &308218890
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 308218891}
-  - component: {fileID: 308218892}
-  m_Layer: 0
-  m_Name: LevelManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &308218891
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 308218890}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 20, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &308218892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 308218890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39868b885201bee0cb61a3dfc7132b52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  respawning: 0
-  respawnDelay: 0.5
-  player: {fileID: 0}
 --- !u!1 &354768495
 GameObject:
   m_ObjectHideFlags: 0
@@ -6407,6 +6364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthTaken: 1
+  instantKill: 0
 --- !u!135 &1344488850
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6537,7 +6495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5ffa7d596a1bc37bb950e60ad829043, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinsGiven: 10
+  coinsGiven: 13
   maximumIterations: 5
   vanishWhenEmpty: 0
 --- !u!1001 &1471474859
@@ -7013,9 +6971,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1714919554}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 405a63dd71bbedd498bc80442ebf7e10, type: 3}
+  m_Script: {fileID: 11500000, guid: 62954faf4b260beaf9d134a4199a3df9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthTaken: 1
+  instantKill: 1
 --- !u!1 &1722622972
 GameObject:
   m_ObjectHideFlags: 0
@@ -7290,6 +7250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthTaken: 1
+  instantKill: 0
 --- !u!65 &1889787263
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12205,16 +12166,15 @@ SceneRoots:
   - {fileID: 1253122398}
   - {fileID: 770568478}
   - {fileID: 1562085067}
+  - {fileID: 1200428709}
   - {fileID: 1705296641}
+  - {fileID: 1714919556}
   - {fileID: 1722622976}
   - {fileID: 1834525838}
   - {fileID: 829532955}
   - {fileID: 1471474859}
   - {fileID: 1468396637}
   - {fileID: 914624664}
-  - {fileID: 1714919556}
-  - {fileID: 308218891}
-  - {fileID: 1200428709}
   - {fileID: 1486071123}
   - {fileID: 277185955}
   - {fileID: 558264451}

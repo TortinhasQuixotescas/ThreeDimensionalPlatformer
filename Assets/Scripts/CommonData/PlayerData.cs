@@ -32,8 +32,8 @@ public class PlayerData
         this.health.IncreaseCurrentQuantity(increaseAmount);
         if (this.health.IsEmpty())
         {
-            MainManager.Instance.FinishGame(false);
-            // LevelManager.uniqueInstance.Respawn();
+            // MainManager.Instance.FinishGame(false);
+            MainManager.Instance.Respawn();
         }
     }
 
