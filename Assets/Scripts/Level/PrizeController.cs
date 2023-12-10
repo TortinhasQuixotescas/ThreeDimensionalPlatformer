@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PrizeController : MonoBehaviour
 {
+    public GameObject pickUpEffect;
     public int coinsGiven = 10;
     public int maximumIterations = 1;
     public bool vanishWhenEmpty = true;
@@ -19,6 +20,8 @@ public class PrizeController : MonoBehaviour
         {
             if (!this.storage.IsEmpty())
             {
+                if (pickUpEffect != null)
+                    Instantiate(pickUpEffect, transform.position, Quaternion.identity);
                 MainManager.Instance.playerData.IncreaseCoins(this.coinsGiven);
                 this.storage.IncreaseCurrentQuantity(-1);
                 if (this.vanishWhenEmpty && this.storage.IsEmpty())

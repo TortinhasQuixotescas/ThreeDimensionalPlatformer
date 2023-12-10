@@ -11,8 +11,7 @@ public class CheckPointController : MonoBehaviour
         player = FindObjectOfType<CharacterController>();
         visitedCheckPoints = new List<GameObject>();
 
-        // Desativa o décimo filho inicialmente
-        Transform tenthChild = transform.GetChild(7); // Assumindo que o décimo filho está na posição 7 da lista de filhos
+        Transform tenthChild = transform.GetChild(7);
         tenthChild.gameObject.SetActive(false);
     }
 
@@ -22,9 +21,7 @@ public class CheckPointController : MonoBehaviour
         {
             visitedCheckPoints.Add(this.gameObject);
             this.gameObject.tag = "CheckPoint";
-
-            // Ativa o décimo filho quando o jogador colidir
-            Transform tenthChild = transform.GetChild(7); // Assumindo que o décimo filho está na posição 9 da lista de filhos
+            Transform tenthChild = transform.GetChild(7);
             tenthChild.gameObject.SetActive(true);
         }
     }

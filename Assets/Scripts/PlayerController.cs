@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     private bool lastGrounded;
     public GameObject jumpParticle;
     public GameObject landingParticle;
+    public float invulnerabilityDuration;
+    public GameObject[] modelParts;
 
     // Start is called before the first frame update
     void Start()
@@ -98,6 +100,11 @@ public class PlayerController : MonoBehaviour
             movementVector.y = Physics.gravity.y * gravityMult * Time.deltaTime;
             isJumping = false;
         }
+    }
+
+    public GameObject[] GetModelParts()
+    {
+        return modelParts;
     }
 
 }
