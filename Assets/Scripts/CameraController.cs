@@ -4,6 +4,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public Transform player;
+    private Quaternion initialRotation;
     public float verticalDistanceToPlayer = 1.5f;
     public float horizontalDistanceToPlayer = 3;
     public float oclusionRaycastDistance = 5f;
@@ -12,18 +13,18 @@ public class CameraController : MonoBehaviour
     public float rotationSpeed = 5f;
     public float slerpSpeed = 2f;
     public float oclusionMinHeight = 1.5f;
-    private RaycastHit hit;
-    private bool occlusionOccurring = false;
-    private bool isRightMouseButtonDown = false;
-    private Vector3 lastMousePosition;
-    private Quaternion initialRotation;
-    private CharacterController characterController;
-    public GameObject lowestStagePoint;
-    private bool isVerticalMovement;
     private float objectHeight;
     private float mouseX;
     private float mouseY;
     private float currentLerpSpeed;
+    private RaycastHit hit;
+    private bool occlusionOccurring = false;
+    private bool isRightMouseButtonDown = false;
+    private bool isVerticalMovement;
+    private Vector3 lastMousePosition;
+    private Vector3 defaultPosition;
+    public GameObject lowestStagePoint;
+    private CharacterController characterController;
 
     void Start()
     {
@@ -58,7 +59,7 @@ public class CameraController : MonoBehaviour
                 lastMousePosition = Input.mousePosition;
             }
 
-            Vector3 defaultPosition = new Vector3(player.position.x, player.position.y + verticalDistanceToPlayer, player.position.z - horizontalDistanceToPlayer);
+            defaultPosition = new Vector3(player.position.x, player.position.y + verticalDistanceToPlayer, player.position.z - horizontalDistanceToPlayer);
 
             isVerticalMovement = Mathf.Abs(characterController.velocity.y) > 0.1f;
 
