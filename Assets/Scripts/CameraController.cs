@@ -11,6 +11,7 @@ public class CameraController : MonoBehaviour
     public float airborneLerpSpeed = 10f;
     public float rotationSpeed = 5f;
     public float slerpSpeed = 2f;
+    public float oclusionMinHeight = 1.5f;
     private RaycastHit hit;
     private bool occlusionOccurring = false;
     private bool isRightMouseButtonDown = false;
@@ -18,6 +19,11 @@ public class CameraController : MonoBehaviour
     private Quaternion initialRotation;
     private CharacterController characterController;
     public GameObject lowestStagePoint;
+    private bool isVerticalMovement;
+    private float objectHeight;
+    private float mouseX;
+    private float mouseY;
+    private float currentLerpSpeed;
 
     void Start()
     {
@@ -43,8 +49,8 @@ public class CameraController : MonoBehaviour
 
             if (isRightMouseButtonDown)
             {
-                float mouseX = Input.mousePosition.x - lastMousePosition.x;
-                float mouseY = Input.mousePosition.y - lastMousePosition.y;
+                mouseX = Input.mousePosition.x - lastMousePosition.x;
+                mouseY = Input.mousePosition.y - lastMousePosition.y;
 
                 transform.RotateAround(player.position, Vector3.up, mouseX * rotationSpeed * Time.deltaTime);
                 transform.RotateAround(player.position, transform.right, -mouseY * 2 * rotationSpeed * Time.deltaTime);
@@ -54,29 +60,37 @@ public class CameraController : MonoBehaviour
 
             Vector3 defaultPosition = new Vector3(player.position.x, player.position.y + verticalDistanceToPlayer, player.position.z - horizontalDistanceToPlayer);
 
-            bool isVerticalMovement = Mathf.Abs(characterController.velocity.y) > 0.1f;
+            isVerticalMovement = Mathf.Abs(characterController.velocity.y) > 0.1f;
 
             if (isVerticalMovement)
             {
-                float currentLerpSpeed = characterController.isGrounded ? groundLerpSpeed : airborneLerpSpeed;
+                currentLerpSpeed = characterController.isGrounded ? groundLerpSpeed : airborneLerpSpeed;
                 transform.position = Vector3.Lerp(transform.position, defaultPosition, Time.deltaTime * currentLerpSpeed);
             }
             else if (Physics.Raycast(player.position, (defaultPosition - player.position).normalized, out hit, oclusionRaycastDistance))
             {
-                Vector3 targetPosition = hit.point;
-                targetPosition.y = player.position.y + verticalDistanceToPlayer;
-                transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * groundLerpSpeed);
-                occlusionOccurring = true;
-            }
-            else if (occlusionOccurring)
-            {
-                Vector3 targetPosition = defaultPosition;
-                transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * groundLerpSpeed);
+                objectHeight = hit.collider.bounds.size.y;
 
-                transform.rotation = Quaternion.Lerp(transform.rotation, initialRotation, Time.deltaTime * slerpSpeed);
+                if (objectHeight > player.position.y * oclusionMinHeight)
+                {
+                    Vector3 targetPosition = hit.point;
+                    targetPosition.y = player.position.y + verticalDistanceToPlayer;
+                    transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * groundLerpSpeed);
+                    occlusionOccurring = true;
+                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(30f, 0f, 0f), Time.deltaTime * slerpSpeed);
+                }
+                else
+                {
+                    transform.position = Vector3.Lerp(transform.position, defaultPosition, Time.deltaTime * groundLerpSpeed);
+                    transform.rotation = Quaternion.Lerp(transform.rotation, initialRotation, Time.deltaTime * slerpSpeed);
+                }
             }
             else
+            {
+                occlusionOccurring = false;
                 transform.position = Vector3.Lerp(transform.position, defaultPosition, Time.deltaTime * groundLerpSpeed);
+                transform.rotation = Quaternion.Lerp(transform.rotation, initialRotation, Time.deltaTime * slerpSpeed);
+            }
         }
         else
         {
@@ -84,7 +98,6 @@ public class CameraController : MonoBehaviour
             transform.position = cameraLowestPosition;
         }
     }
-
 
     IEnumerator ReturnToInitialRotation()
     {
@@ -95,7 +108,6 @@ public class CameraController : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, initialRotation, Time.deltaTime * slerpSpeed);
             yield return null;
         }
-
         occlusionOccurring = false;
     }
 }
