@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private int moveSpeed = 8;
     [SerializeField] private int jumpSpeed = 20;
+    public float bounceSpeed;
     [SerializeField] private int rotateSpeed = 10;
     [SerializeField] private int gravityMult = 5;
     public Animator playerAnimator;
@@ -22,7 +23,8 @@ public class PlayerController : MonoBehaviour
     private bool lastGrounded;
     public GameObject jumpParticle;
     public GameObject landingParticle;
-    public float invulnerabilityDuration;
+    public float invulnerabilityDuration = 1;
+    public float invulnerabilityCounter;
     public GameObject[] modelParts;
 
     // Start is called before the first frame update
@@ -102,6 +104,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void Bounce()
+    {
+        movementVector.y = bounceSpeed;
+        charController.Move(Vector3.up * bounceSpeed * Time.deltaTime);
+        // playerAnimator.SetBool("Jump", isJumping);
+    }
     public GameObject[] GetModelParts()
     {
         return modelParts;
