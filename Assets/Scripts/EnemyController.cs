@@ -42,8 +42,6 @@ public class EnemyController : MonoBehaviour
 
     public GameObject deathEffect;
 
-
-    // Start is called before the first frame update
     void Start()
     {
         playerDisplay = PlayerController.uniqueInstance.GetModelParts();
@@ -55,7 +53,6 @@ public class EnemyController : MonoBehaviour
         currentState = EnemyState.idle;
     }
 
-    // Update is called once per frame
     void Update()
     {
         Blink();
@@ -73,7 +70,6 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-
             switch (currentState)
             {
                 case EnemyState.idle:
@@ -105,7 +101,7 @@ public class EnemyController : MonoBehaviour
                     lookDirection = player.transform.position;
                     if (chaseDelayCounter > 0)
                         chaseDelayCounter -= Time.deltaTime;
-                    else
+                    else if (player.charController.isGrounded)
                     {
                         yAux = rb.velocity.y;
                         moveDirection = player.transform.position - transform.position;
@@ -126,7 +122,6 @@ public class EnemyController : MonoBehaviour
                     if (returnCounter <= 0)
                         currentState = EnemyState.patrolling;
                     break;
-
             }
         }
 
@@ -138,7 +133,6 @@ public class EnemyController : MonoBehaviour
         }
 
         lookDirection.y = transform.position.y;
-        // transform.LookAt(lookDirection);
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection - transform.position), rotationSpeed * Time.deltaTime);
     }
 
@@ -151,7 +145,6 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-
             if (nextPoint == routePoints.Length - 1)
                 nextPoint = 0;
             else
@@ -166,7 +159,7 @@ public class EnemyController : MonoBehaviour
             MainManager.Instance.playerData.IncreaseHealth(-1 * this.healthTaken);
             player.invulnerabilityCounter = player.invulnerabilityDuration;
             chaseDelayCounter = chaseDelay;
-
+            Blink();
         }
     }
 
@@ -177,7 +170,7 @@ public class EnemyController : MonoBehaviour
             MainManager.Instance.playerData.IncreaseHealth(-1 * this.healthTaken);
             player.invulnerabilityCounter = player.invulnerabilityDuration;
             chaseDelayCounter = chaseDelay;
-
+            Blink();
         }
     }
 
@@ -187,9 +180,10 @@ public class EnemyController : MonoBehaviour
         {
             player.Bounce();
             dyingCounter = dyingDelay;
+            Blink();
         }
-
     }
+
     private void Blink()
     {
         if (player.invulnerabilityCounter > 0)
@@ -209,5 +203,4 @@ public class EnemyController : MonoBehaviour
             }
         }
     }
-
 }

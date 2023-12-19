@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int rotateSpeed = 10;
     [SerializeField] private int gravityMult = 5;
     public Animator playerAnimator;
-    private CharacterController charController;
+    [HideInInspector] public CharacterController charController;
     private CameraController camController;
     private Vector3 movementVector;
     private float ySpeed;
