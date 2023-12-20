@@ -24,7 +24,7 @@ public class MainManager : MonoBehaviour
     public LevelData currentLevel;
     public GameObject levelInterfaceCanvas;
     private LevelInterfaceController levelInterfaceController;
-    public int firstLevel = 0;
+    public int currentLevelIndex = 0;
 
     private void Awake()
     {
@@ -42,7 +42,7 @@ public class MainManager : MonoBehaviour
     {
         Cursor.visible = false;
         Time.timeScale = 1;
-        StartCoroutine(LoadLevel(this.firstLevel));
+        LoadNextLevel();
     }
 
     public void FinishGame(bool victory)
@@ -56,6 +56,31 @@ public class MainManager : MonoBehaviour
         Debug.Log(victory ? "Victory!" : "Game Over");
         Application.Quit();
         UnityEditor.EditorApplication.isPlaying = false;
+    }
+
+    public void LoadNextLevel()
+    {
+        this.currentLevelIndex++;
+        string sceneName = "";
+        switch (this.currentLevelIndex)
+        {
+            case 0:
+                sceneName = "TestArea";
+                break;
+            case 1:
+                sceneName = "Level_1";
+                break;
+            case 2:
+                sceneName = "Level_2";
+                break;
+            case 3:
+                sceneName = "Level_3";
+                break;
+            default:
+                this.FinishGame(true);
+                return;
+        }
+        StartCoroutine(LoadLevel(sceneName));
     }
 
     /// Level Manipulation 
@@ -76,19 +101,8 @@ public class MainManager : MonoBehaviour
         }
     }
 
-    public IEnumerator LoadLevel(int levelNumber)
+    public IEnumerator LoadLevel(string sceneName)
     {
-        string sceneName = "";
-        switch (levelNumber)
-        {
-            case 1:
-                sceneName = "Level_1";
-                break;
-            default:
-                sceneName = "TestArea";
-                break;
-        }
-
         yield return StartCoroutine(LoadAsyncLevel(sceneName, LoadSceneMode.Single));
         this.player = GameObject.FindGameObjectWithTag("Player");
         this.playerController = this.player.GetComponent<PlayerController>();

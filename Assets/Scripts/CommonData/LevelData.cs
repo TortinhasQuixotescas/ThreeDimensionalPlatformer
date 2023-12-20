@@ -73,6 +73,7 @@ public class LevelData
         // Set first checkpoint as visited
         this.SetCheckPointAsVisited(this.checkPoints[0]);
         this.checkPoints[0].GetComponent<CheckPointController>().SetAsShiny();
+        this.checkPoints[^1].GetComponent<CheckPointController>().SetAsFinal();
     }
 
     public bool SetCheckPointAsVisited(GameObject checkPoint)
