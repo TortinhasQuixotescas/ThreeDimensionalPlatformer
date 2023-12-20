@@ -1,29 +1,20 @@
 using UnityEngine.UI;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class UIController : MonoBehaviour
+public class LevelInterfaceController : MonoBehaviour
 
 {
-    public static UIController uniqueInstance;
+    public Image darkScreen;
+    public float fadeSpeed = 2f;
     private bool fadingIn;
     private bool fadingOut;
-    public float fadeSpeed = 2f;
-    public Image darkScreen;
-    // Start is called before the first frame update
-    void Start()
-    {
 
+    private void Start()
+    {
+        FadeIn();
     }
 
-    private void Awake()
-    {
-        uniqueInstance = this;
-    }
-
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (fadingOut)
             darkScreen.color = new Color(darkScreen.color.r, darkScreen.color.g, darkScreen.color.b, Mathf.MoveTowards(darkScreen.color.a, 1f, fadeSpeed * Time.deltaTime));

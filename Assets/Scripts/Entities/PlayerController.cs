@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -27,8 +25,7 @@ public class PlayerController : MonoBehaviour
     public float invulnerabilityCounter;
     public GameObject[] modelParts;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         camController = FindObjectOfType<CameraController>();
         lastGrounded = true;
@@ -36,15 +33,13 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        UIController.uniqueInstance.FadeIn();
         uniqueInstance = this;
         charController = GetComponent<CharacterController>();
         isJumping = false;
         idleTimer = 0f;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         ySpeed = movementVector.y;
         movementVector = camController.transform.forward * Input.GetAxisRaw("Vertical") + camController.transform.right * Input.GetAxisRaw("Horizontal");
@@ -93,7 +88,7 @@ public class PlayerController : MonoBehaviour
         playerAnimator.SetBool("Jump", isJumping);
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (!charController.isGrounded)
             movementVector.y += Physics.gravity.y * gravityMult * Time.deltaTime;
@@ -110,6 +105,7 @@ public class PlayerController : MonoBehaviour
         charController.Move(Vector3.up * bounceSpeed * Time.deltaTime);
         // playerAnimator.SetBool("Jump", isJumping);
     }
+
     public GameObject[] GetModelParts()
     {
         return modelParts;

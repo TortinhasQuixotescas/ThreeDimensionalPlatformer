@@ -7,6 +7,7 @@ TagManager:
   - CheckPoint
   - Enemy
   - PowerUp
+  - LevelInterfaceCanvas
   layers:
   - Default
   - TransparentFX

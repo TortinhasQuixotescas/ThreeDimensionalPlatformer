@@ -1,15 +1,12 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CheckPointController : MonoBehaviour
 {
     public CharacterController player;
-    private List<GameObject> visitedCheckPoints;
 
     void Start()
     {
         player = FindObjectOfType<CharacterController>();
-        visitedCheckPoints = new List<GameObject>();
 
         Transform tenthChild = transform.GetChild(7);
         tenthChild.gameObject.SetActive(false);
@@ -17,12 +14,19 @@ public class CheckPointController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !visitedCheckPoints.Contains(this.gameObject))
+        if (other.CompareTag("Player"))
         {
-            visitedCheckPoints.Add(this.gameObject);
-            this.gameObject.tag = "CheckPoint";
-            Transform tenthChild = transform.GetChild(7);
-            tenthChild.gameObject.SetActive(true);
+            bool hasBeenVisited = MainManager.Instance.currentLevel.SetCheckPointAsVisited(this.gameObject);
+            if (!hasBeenVisited)
+            {
+                this.SetAsShiny();
+            }
         }
+    }
+
+    public void SetAsShiny()
+    {
+        Transform tenthChild = transform.GetChild(7);
+        tenthChild.gameObject.SetActive(true);
     }
 }

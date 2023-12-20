@@ -17,6 +17,8 @@ public class MainManager : MonoBehaviour
     public bool respawning;
     public float respawnDelay = 0.5f;
     public LevelData currentLevel;
+    public GameObject levelInterfaceCanvas;
+    private LevelInterfaceController levelInterfaceController;
 
     private void Awake()
     {
@@ -53,6 +55,7 @@ public class MainManager : MonoBehaviour
     /// Level Manipulation 
     IEnumerator LoadAsyncLevel(string sceneName)
     {
+        // Load level scene
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
         asyncLoad.allowSceneActivation = false;
         while (!asyncLoad.isDone)
@@ -64,7 +67,19 @@ public class MainManager : MonoBehaviour
         this.player = GameObject.FindGameObjectWithTag("Player");
         this.currentLevel = new LevelData(this.player.GetComponent<CharacterController>());
         this.playerData = new PlayerData(this.maxHealth);
-        SceneManager.LoadScene("Interface", LoadSceneMode.Additive);
+        this.currentLevel.InitializeCheckPoints(GameObject.FindGameObjectsWithTag("CheckPoint"));
+
+        // Load interface scene
+        asyncLoad = SceneManager.LoadSceneAsync("Interface", LoadSceneMode.Additive);
+        asyncLoad.allowSceneActivation = false;
+        while (!asyncLoad.isDone)
+        {
+            if (asyncLoad.progress >= 0.9f)
+                asyncLoad.allowSceneActivation = true;
+            yield return null;
+        }
+        this.levelInterfaceCanvas = GameObject.FindGameObjectWithTag("LevelInterfaceCanvas");
+        this.levelInterfaceController = this.levelInterfaceCanvas.GetComponent<LevelInterfaceController>();
     }
 
     public void LoadLevel(int levelNumber)
@@ -91,12 +106,12 @@ public class MainManager : MonoBehaviour
 
     public IEnumerator RespawnCoroutine()
     {
-        currentLevel.InitializeCheckPoints(GameObject.FindGameObjectsWithTag("CheckPoint"));
-
+        // Disable player
         currentLevel.GetPlayer().gameObject.SetActive(false);
-        UIController.uniqueInstance.FadeOut();
+        this.levelInterfaceController.FadeOut();
         yield return new WaitForSeconds(respawnDelay);
 
+        // Move player to last checkpoint
         currentLevel.GetPlayer().transform.position = currentLevel.GetLastCheckPoint().transform.position;
 
         // Heal player
@@ -113,7 +128,7 @@ public class MainManager : MonoBehaviour
         playerData.IncreaseCoins(-spentCoins);
 
         currentLevel.GetPlayer().gameObject.SetActive(true);
-        UIController.uniqueInstance.FadeIn();
+        this.levelInterfaceController.FadeIn();
         respawning = false;
     }
 

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class PlayerInterfaceController : MonoBehaviour
 {
-
     public GameObject livesPanel;
     public GameObject coinsPanel;
     private TMP_Text coinsTMPText;

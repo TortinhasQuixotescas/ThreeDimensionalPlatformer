@@ -12,8 +12,7 @@ public class BossDamageController : MonoBehaviour
     {
         player = FindAnyObjectByType<PlayerController>();
     }
-
-
+    
     public void OnTriggerEnter(Collider collider)
     {
         if (collider.tag == "Player")

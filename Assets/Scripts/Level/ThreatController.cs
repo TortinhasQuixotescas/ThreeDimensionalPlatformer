@@ -10,14 +10,15 @@ public class ThreatController : MonoBehaviour
     private float invulnerabilityDuration;
     private float invulnerabilityCounter;
 
-    void Start()
+    private void Start()
     {
         invulnerabilityCounter = 0;
         invulnerabilityDuration = PlayerController.uniqueInstance.invulnerabilityDuration;
 
         playerDisplay = PlayerController.uniqueInstance.GetModelParts();
     }
-    void Update()
+
+    private void Update()
     {
         if (invulnerabilityCounter > 0)
         {
@@ -36,8 +37,10 @@ public class ThreatController : MonoBehaviour
             }
         }
     }
+
     private void OnTriggerEnter(Collider collider)
     {
+        Debug.Log("Triggered");
         if (collider.CompareTag("Player"))
         {
             if (this.instantKill)
@@ -49,6 +52,5 @@ public class ThreatController : MonoBehaviour
             }
         }
     }
-
 
 }
