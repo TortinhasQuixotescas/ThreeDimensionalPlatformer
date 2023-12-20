@@ -71,7 +71,7 @@ public class LevelData
         Array.Sort(this.checkPoints, (x, y) => this.GetCheckPointNumber(x) - this.GetCheckPointNumber(y));
 
         // Set first checkpoint as visited
-        this.SetCheckPointAsVisited(checkPoints[0]);
+        this.SetCheckPointAsVisited(this.checkPoints[0]);
         this.checkPoints[0].GetComponent<CheckPointController>().SetAsShiny();
     }
 

@@ -633,9 +633,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  playerController: {fileID: 0}
   maxHealth: 6
   healingCost: 7
-  invulnerabilityDuration: 5
+  invulnerabilityDuration: 2
   blinkDuration: 0.1
   respawning: 0
   respawnDelay: 0.5
@@ -7234,7 +7235,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56a69d1bafe9141cd86a348cac3730e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1705296641}
   verticalDistanceToPlayer: 2
   horizontalDistanceToPlayer: 6
   oclusionRaycastDistance: 5
@@ -11638,7 +11638,7 @@ MonoBehaviour:
   gravityMult: 4
   bounceSpeed: 15
   playerAnimator: {fileID: 1778635781}
-  charController: {fileID: 0}
+  characterController: {fileID: 0}
   jumpParticle: {fileID: 354768495}
   landingParticle: {fileID: 1932207530}
   modelParts:
@@ -12231,7 +12231,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthTaken: 1
   instantKill: 1
-  playerDisplay: []
 --- !u!65 &1834525840
 BoxCollider:
   m_ObjectHideFlags: 0

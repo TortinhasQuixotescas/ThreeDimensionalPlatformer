@@ -24,6 +24,7 @@ public class MainManager : MonoBehaviour
     public LevelData currentLevel;
     public GameObject levelInterfaceCanvas;
     private LevelInterfaceController levelInterfaceController;
+    public int firstLevel = 0;
 
     private void Awake()
     {
@@ -41,7 +42,7 @@ public class MainManager : MonoBehaviour
     {
         Cursor.visible = false;
         Time.timeScale = 1;
-        StartCoroutine(LoadLevel(0));
+        StartCoroutine(LoadLevel(this.firstLevel));
     }
 
     public void FinishGame(bool victory)
@@ -80,8 +81,8 @@ public class MainManager : MonoBehaviour
         string sceneName = "";
         switch (levelNumber)
         {
-            case 0:
-                sceneName = "TestArea";
+            case 1:
+                sceneName = "Level_1";
                 break;
             default:
                 sceneName = "TestArea";

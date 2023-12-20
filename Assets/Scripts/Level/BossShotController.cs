@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BossShotController : MonoBehaviour
+public class BossShotController : ThreatController
 {
     // Animation
     public Rigidbody rb;
@@ -10,8 +10,6 @@ public class BossShotController : MonoBehaviour
     private Vector3 startingPosition;
     public int maxDistance = 35;
     public float speed;
-    public float dyingCounter;
-    public int healthTaken = 1;
 
     private void Start()
     {
@@ -27,16 +25,9 @@ public class BossShotController : MonoBehaviour
             Destroy(gameObject);
     }
 
-    private void OnTriggerEnter(Collider collider)
+    new protected void OnTriggerEnter(Collider collider)
     {
-        if (collider.tag == "Player"
-            && MainManager.Instance.playerData.invulnerabilityCounter <= 0
-            && dyingCounter == 0)
-        {
-            MainManager.Instance.playerData.IncreaseHealth(-1 * this.healthTaken);
-            MainManager.Instance.playerData.ResetInvulnerabilityCounter();
-            MainManager.Instance.playerController.Blink();
-        }
+        base.OnTriggerEnter(collider);
 
         if (destructionEffect != null)
             Instantiate(destructionEffect, transform.position, transform.rotation);

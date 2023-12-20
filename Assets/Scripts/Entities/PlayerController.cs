@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // public static PlayerController uniqueInstance { get; private set; }
-
     // Move and Rotation
     private Vector3 movementVector;
     [SerializeField] private int moveSpeed = 8;
@@ -41,6 +39,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        this.Blink();
+
         ySpeed = movementVector.y;
         movementVector = camController.transform.forward * Input.GetAxisRaw("Vertical") + camController.transform.right * Input.GetAxisRaw("Horizontal");
         movementVector.y = 0;
@@ -102,11 +102,6 @@ public class PlayerController : MonoBehaviour
         movementVector.y = bounceSpeed;
         characterController.Move(Vector3.up * bounceSpeed * Time.deltaTime);
         // playerAnimator.SetBool("Jump", isJumping);
-    }
-
-    public GameObject[] GetModelParts()
-    {
-        return modelParts;
     }
 
     public void Blink()

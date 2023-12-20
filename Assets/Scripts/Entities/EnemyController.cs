@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : ThreatController
 {
     public enum EnemyState
     {
@@ -43,9 +43,6 @@ public class EnemyController : MonoBehaviour
     public float deformationSpeed;
     public GameObject deathEffect;
 
-    // Common Data
-    public int healthTaken = 1;
-
     private void Start()
     {
         this.waitCounter = this.waitDelay;
@@ -56,7 +53,6 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
-        MainManager.Instance.playerController.Blink();
         if (dyingCounter > 0)
         {
             dyingCounter -= Time.deltaTime;
@@ -156,14 +152,10 @@ public class EnemyController : MonoBehaviour
     /// Collision
     private void HandleCollision(string colliderTag)
     {
-        if (colliderTag == "Player"
-            && MainManager.Instance.playerData.invulnerabilityCounter <= 0
-            && dyingCounter == 0)
+        if (colliderTag == "Player" && dyingCounter == 0)
         {
-            MainManager.Instance.playerData.IncreaseHealth(-1 * this.healthTaken);
-            MainManager.Instance.playerData.ResetInvulnerabilityCounter();
+            this.HurtPlayer();
             chaseDelayCounter = chaseDelay;
-            MainManager.Instance.playerController.Blink();
         }
     }
 
@@ -177,9 +169,9 @@ public class EnemyController : MonoBehaviour
         this.HandleCollision(collision.gameObject.tag);
     }
 
-    private void OnTriggerEnter(Collider collider)
+    new private void OnTriggerEnter(Collider collider)
     {
-        if (collider.tag == "Player")
+        if (collider.CompareTag("Player"))
         {
             MainManager.Instance.playerController.Bounce();
             dyingCounter = dyingDelay;
