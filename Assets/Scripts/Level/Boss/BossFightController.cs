@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BossFightController : MonoBehaviour
 {
-    public int maxHealth;
-    private int currentHealth;
     public Transform[] spawnPoints;
     public GameObject bossObject;
     public float spawnDelay;
@@ -25,7 +23,7 @@ public class BossFightController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentHealth = maxHealth;
+        MainManager.Instance.currentLevel.StartBossFight();
         lastSpawn = 0;
         AppearingAnimation();
         shotCounter = shotDelay;
@@ -46,7 +44,7 @@ public class BossFightController : MonoBehaviour
                 if (appearingShotEffect != null)
                     Instantiate(appearingShotEffect, shotOrigin.position, shotOrigin.rotation);
 
-                shotDelay = Random.Range(0.5f, 1.5f) / (6 - currentHealth);
+                shotDelay = Random.Range(0.5f, 1.5f) / (6 - MainManager.Instance.currentLevel.GetBossHealth());
                 shotCounter = shotDelay;
             }
 
@@ -60,8 +58,8 @@ public class BossFightController : MonoBehaviour
 
     public void DamageBoss()
     {
-        --currentHealth;
-        if (currentHealth <= 0)
+        MainManager.Instance.currentLevel.DecreaseBossHealth();
+        if (MainManager.Instance.currentLevel.GetBossHealth() <= 0)
             StartCoroutine(EndBattle());
         else
             StartCoroutine(Spawn());
@@ -120,6 +118,7 @@ public class BossFightController : MonoBehaviour
         bossObject.SetActive(false);
         AppearingAnimation();
         yield return new WaitForSeconds(1);
+        MainManager.Instance.currentLevel.SetFinalCheckPointActive(true);
         gameObject.SetActive(false);
     }
 }

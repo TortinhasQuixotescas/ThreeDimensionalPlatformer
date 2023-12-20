@@ -132,7 +132,7 @@ public class MainManager : MonoBehaviour
         yield return new WaitForSeconds(respawnDelay);
 
         // Move player to last checkpoint
-        this.playerController.characterController.transform.position = currentLevel.GetLastCheckPoint().transform.position;
+        this.playerController.characterController.transform.position = currentLevel.GetLastVisitedCheckPoint().transform.position;
 
         // Heal player
         int coins = playerData.GetCoinsQuantity();

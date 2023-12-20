@@ -5,17 +5,29 @@ public class LevelData
 {
     private GameObject[] checkPoints;
     private bool[] visitedCheckPoints;
-    private int lastCheckPointIndex;
+    private int lastVisitedCheckPointIndex;
+    private DataItem_Int bossHealth;
 
     public LevelData()
     {
-        this.lastCheckPointIndex = -1;
+        this.lastVisitedCheckPointIndex = -1;
+        this.bossHealth = new DataItem_Int(0, 5);
     }
 
     /// Getters 
-    public GameObject GetLastCheckPoint()
+    public GameObject GetLastVisitedCheckPoint()
     {
-        return this.checkPoints[this.lastCheckPointIndex];
+        return this.checkPoints[this.lastVisitedCheckPointIndex];
+    }
+
+    public int GetBossHealth()
+    {
+        return this.bossHealth.GetCurrentQuantity();
+    }
+
+    public int GetBossMaxHealth()
+    {
+        return this.bossHealth.GetMaxQuantity();
     }
 
     /* Get the number in the name of the checkpoint.
@@ -49,6 +61,29 @@ public class LevelData
         return -1;
     }
 
+    /// Setters
+    public void SetFinalCheckPointActive(bool active)
+    {
+        this.checkPoints[^1].SetActive(active);
+    }
+
+    public bool SetCheckPointAsVisited(GameObject checkPoint)
+    {
+        int number = this.GetCheckPointNumber(checkPoint);
+        int index = this.GetCheckPointIndex(number);
+        if (index == -1 || index >= this.checkPoints.Length)
+            return false;
+        bool hasBeenVisited = this.visitedCheckPoints[index];
+        if (!hasBeenVisited)
+        {
+            lastVisitedCheckPointIndex = index;
+            this.visitedCheckPoints[index] = true;
+            return false;
+        }
+        else
+            return true;
+    }
+
     /// Methods
     public void InitializeCheckPoints(GameObject[] checkPoints)
     {
@@ -76,21 +111,14 @@ public class LevelData
         this.checkPoints[^1].GetComponent<CheckPointController>().SetAsFinal();
     }
 
-    public bool SetCheckPointAsVisited(GameObject checkPoint)
+    public void StartBossFight()
     {
-        int number = this.GetCheckPointNumber(checkPoint);
-        int index = this.GetCheckPointIndex(number);
-        if (index == -1 || index >= this.checkPoints.Length)
-            return false;
-        bool hasBeenVisited = this.visitedCheckPoints[index];
-        if (!hasBeenVisited)
-        {
-            lastCheckPointIndex = index;
-            this.visitedCheckPoints[index] = true;
-            return false;
-        }
-        else
-            return true;
+        this.bossHealth.IncreaseCurrentQuantity(this.bossHealth.GetMaxQuantity());
+    }
+
+    public void DecreaseBossHealth()
+    {
+        this.bossHealth.IncreaseCurrentQuantity(-1);
     }
 
 }

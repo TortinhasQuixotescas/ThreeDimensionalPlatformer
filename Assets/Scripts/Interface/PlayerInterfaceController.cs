@@ -7,6 +7,8 @@ public class PlayerInterfaceController : MonoBehaviour
 {
     public GameObject livesPanel;
     public GameObject coinsPanel;
+    public GameObject bossHealthPanel;
+    private Image bossHealthBar;
     private TMP_Text coinsTMPText;
     public GameObject fullHeartPrefab;
     public Sprite fullHeartSprite;
@@ -16,6 +18,7 @@ public class PlayerInterfaceController : MonoBehaviour
 
     private void Start()
     {
+        this.bossHealthBar = bossHealthPanel.transform.GetChild(0).GetComponent<Image>();
         this.hearts = new List<Image>();
         this.coinsTMPText = coinsPanel.transform.GetChild(2).GetComponent<TMP_Text>();
         this.coinsTMPText.SetText(MainManager.Instance.playerData.GetCoinsQuantity().ToString().PadLeft(6, '0'));
@@ -33,6 +36,7 @@ public class PlayerInterfaceController : MonoBehaviour
     {
         this.UpdateHearts(MainManager.Instance.playerData.GetHealthValue());
         this.coinsTMPText.SetText(MainManager.Instance.playerData.GetCoinsQuantity().ToString().PadLeft(6, '0'));
+        this.UpdateBossHealth();
     }
 
     public void ShowFinishGamePanel(bool victory)
@@ -59,6 +63,21 @@ public class PlayerInterfaceController : MonoBehaviour
             {
                 hearts[i].sprite = emptyHeartSprite;
             }
+        }
+    }
+
+    private void UpdateBossHealth()
+    {
+        float fillAmount = (float)MainManager.Instance.currentLevel.GetBossHealth() / (float)MainManager.Instance.currentLevel.GetBossMaxHealth();
+        if (fillAmount <= 0)
+        {
+            fillAmount = 0;
+            this.bossHealthPanel.SetActive(false);
+        }
+        else
+        {
+            this.bossHealthPanel.SetActive(true);
+            this.bossHealthBar.fillAmount = fillAmount;
         }
     }
 

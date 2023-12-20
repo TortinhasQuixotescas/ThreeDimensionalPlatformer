@@ -6,8 +6,9 @@ public class BossActivator : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.tag == "Player")
+        if (collider.CompareTag("Player"))
         {
+            MainManager.Instance.currentLevel.SetFinalCheckPointActive(false);
             boss.SetActive(true);
             this.gameObject.SetActive(false);
         }

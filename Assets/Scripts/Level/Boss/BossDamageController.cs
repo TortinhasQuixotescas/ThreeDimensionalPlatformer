@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BossDamageController : MonoBehaviour
@@ -8,7 +6,7 @@ public class BossDamageController : MonoBehaviour
 
     public void OnTriggerEnter(Collider collider)
     {
-        if (collider.tag == "Player")
+        if (collider.CompareTag("Player"))
         {
             boss.DamageBoss();
             MainManager.Instance.playerController.Bounce();
