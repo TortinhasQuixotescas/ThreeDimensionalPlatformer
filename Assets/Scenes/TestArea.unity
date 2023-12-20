@@ -632,9 +632,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52aa7d35c97fd16da973be1b408bfb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 6
   player: {fileID: 0}
+  maxHealth: 6
   healingCost: 7
+  invulnerabilityDuration: 5
+  blinkDuration: 0.1
   respawning: 0
   respawnDelay: 0.5
   levelInterfaceCanvas: {fileID: 0}
@@ -11632,15 +11634,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 8
   jumpSpeed: 17
-  bounceSpeed: 15
   rotateSpeed: 20
   gravityMult: 4
+  bounceSpeed: 15
   playerAnimator: {fileID: 1778635781}
   charController: {fileID: 0}
   jumpParticle: {fileID: 354768495}
   landingParticle: {fileID: 1932207530}
-  invulnerabilityDuration: 2
-  invulnerabilityCounter: 0
   modelParts:
   - {fileID: 41704889}
   - {fileID: 1452076467}
@@ -11653,7 +11653,7 @@ Transform:
   m_GameObject: {fileID: 1705296639}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 300, y: 0.5, z: 270}
+  m_LocalPosition: {x: 2, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12232,7 +12232,6 @@ MonoBehaviour:
   healthTaken: 1
   instantKill: 1
   playerDisplay: []
-  blinkDuration: 0.1
 --- !u!65 &1834525840
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18063,6 +18062,6 @@ SceneRoots:
   - {fileID: 770568478}
   - {fileID: 1562085067}
   - {fileID: 1705296641}
-  - {fileID: 1603620122}
   - {fileID: 1835797067}
+  - {fileID: 1603620122}
   - {fileID: 1834525838}

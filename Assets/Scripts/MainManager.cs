@@ -8,10 +8,13 @@ public class MainManager : MonoBehaviour
     public static MainManager Instance;
 
     // Player Data
-    public int maxHealth;
-    public PlayerData playerData;
     public GameObject player;
+    public PlayerData playerData;
+    public PlayerController playerController;
+    public int maxHealth;
     public int healingCost = 10;
+    public int invulnerabilityDuration;
+    public float blinkDuration = 0.1f;
 
     // Level Data
     public bool respawning;
@@ -65,8 +68,9 @@ public class MainManager : MonoBehaviour
             yield return null;
         }
         this.player = GameObject.FindGameObjectWithTag("Player");
-        this.currentLevel = new LevelData(this.player.GetComponent<CharacterController>());
-        this.playerData = new PlayerData(this.maxHealth);
+        this.playerController = this.player.GetComponent<PlayerController>();
+        this.playerData = new PlayerData(this.maxHealth, this.invulnerabilityDuration, this.blinkDuration);
+        this.currentLevel = new LevelData();
         this.currentLevel.InitializeCheckPoints(GameObject.FindGameObjectsWithTag("CheckPoint"));
 
         // Load interface scene
@@ -107,27 +111,26 @@ public class MainManager : MonoBehaviour
     public IEnumerator RespawnCoroutine()
     {
         // Disable player
-        currentLevel.GetPlayer().gameObject.SetActive(false);
+        this.playerController.characterController.gameObject.SetActive(false);
         this.levelInterfaceController.FadeOut();
         yield return new WaitForSeconds(respawnDelay);
 
         // Move player to last checkpoint
-        currentLevel.GetPlayer().transform.position = currentLevel.GetLastCheckPoint().transform.position;
+        this.playerController.characterController.transform.position = currentLevel.GetLastCheckPoint().transform.position;
 
         // Heal player
         int coins = playerData.GetCoinsQuantity();
         int healedHealth = Math.Min(coins / this.healingCost, playerData.GetMaxHealthValue());
         if (healedHealth == 0)
-        {
-            // Check game end
-            FinishGame(false);
+        { // Check game end
+            this.FinishGame(false);
             yield break;
         }
         int spentCoins = healedHealth * this.healingCost;
         playerData.IncreaseHealth(healedHealth);
         playerData.IncreaseCoins(-spentCoins);
 
-        currentLevel.GetPlayer().gameObject.SetActive(true);
+        this.playerController.characterController.gameObject.SetActive(true);
         this.levelInterfaceController.FadeIn();
         respawning = false;
     }

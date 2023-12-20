@@ -1,18 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public float moveSpeed;
-    public float rotationSpeed;
-    public Transform[] routePoints;
-    private int nextPoint = 0;
-    public Rigidbody rb;
-    private Vector3 moveDirection;
-    private float yAux;
-    private PlayerController player;
-    private Vector3 lookDirection;
     public enum EnemyState
     {
         idle,
@@ -20,42 +9,54 @@ public class EnemyController : MonoBehaviour
         chasing,
         returning
     };
+
+    // Generic
+    public Rigidbody rb;
+
+    // Move and Rotation
+    public float moveSpeed;
+    private Vector3 moveDirection;
+    public float rotationSpeed;
+    public float jumpSpeed;
+    private Vector3 lookDirection;
+
+    // Route
     public EnemyState currentState;
+    public Transform[] routePoints;
+    private int nextPoint = 0;
+    public float chaseDistance;
+    public float chaseSpeed;
+    public float chaseDelay;
+    public float chaseDelayCounter;
+    public float returningDelay;
+    public float returnCounter;
+    public float loseDistance;
     public float waitDelay;
     public float waitCounter;
     public float waitProbability;
-    public float chaseDistance;
-    public float loseDistance;
-    public float chaseSpeed;
-    public float returningDelay;
-    public float returnCounter;
-    public float jumpSpeed;
-    public float chaseDelay;
-    public float chaseDelayCounter;
-    public int healthTaken = 1;
-    private float flashCounter;
+    private float yAux;
+
+    // Events
     public float blinkDuration = 0.1f;
-    public GameObject[] playerDisplay;
     public float dyingDelay;
     public float dyingCounter;
     public float deformationSpeed;
-
     public GameObject deathEffect;
 
-    void Start()
+    // Common Data
+    public int healthTaken = 1;
+
+    private void Start()
     {
-        playerDisplay = PlayerController.uniqueInstance.GetModelParts();
-        waitCounter = waitDelay;
-        player = FindAnyObjectByType<PlayerController>();
+        this.waitCounter = this.waitDelay;
+        this.currentState = EnemyState.idle;
         foreach (Transform routePoint in routePoints)
             routePoint.parent = null;
-
-        currentState = EnemyState.idle;
     }
 
-    void Update()
+    private void Update()
     {
-        Blink();
+        MainManager.Instance.playerController.Blink();
         if (dyingCounter > 0)
         {
             dyingCounter -= Time.deltaTime;
@@ -98,19 +99,19 @@ public class EnemyController : MonoBehaviour
                     break;
 
                 case EnemyState.chasing:
-                    lookDirection = player.transform.position;
+                    lookDirection = MainManager.Instance.playerController.transform.position;
                     if (chaseDelayCounter > 0)
                         chaseDelayCounter -= Time.deltaTime;
-                    else if (player.charController.isGrounded)
+                    else if (MainManager.Instance.playerController.characterController.isGrounded)
                     {
                         yAux = rb.velocity.y;
-                        moveDirection = player.transform.position - transform.position;
+                        moveDirection = MainManager.Instance.playerController.transform.position - transform.position;
                         moveDirection.y = 0;
                         moveDirection.Normalize();
                         rb.velocity = moveDirection * chaseSpeed;
                         rb.velocity = new Vector3(rb.velocity.x, yAux, rb.velocity.z);
                     }
-                    if (Vector3.Distance(player.transform.position, this.transform.position) > loseDistance)
+                    if (Vector3.Distance(MainManager.Instance.playerController.transform.position, this.transform.position) > loseDistance)
                     {
                         currentState = EnemyState.returning;
                         returnCounter = returningDelay;
@@ -125,7 +126,7 @@ public class EnemyController : MonoBehaviour
             }
         }
 
-        if (Vector3.Distance(player.transform.position, this.transform.position) < chaseDistance && currentState != EnemyState.chasing)
+        if (Vector3.Distance(MainManager.Instance.playerController.transform.position, this.transform.position) < chaseDistance && currentState != EnemyState.chasing)
         {
             currentState = EnemyState.chasing;
             rb.velocity = Vector3.up * jumpSpeed;
@@ -152,55 +153,38 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    /// Collision
+    private void HandleCollision(string colliderTag)
     {
-        if (collision.gameObject.tag == "Player" && player.invulnerabilityCounter <= 0 && dyingCounter == 0)
+        if (colliderTag == "Player"
+            && MainManager.Instance.playerData.invulnerabilityCounter <= 0
+            && dyingCounter == 0)
         {
             MainManager.Instance.playerData.IncreaseHealth(-1 * this.healthTaken);
-            player.invulnerabilityCounter = player.invulnerabilityDuration;
+            MainManager.Instance.playerData.ResetInvulnerabilityCounter();
             chaseDelayCounter = chaseDelay;
-            Blink();
+            MainManager.Instance.playerController.Blink();
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        this.HandleCollision(collision.gameObject.tag);
     }
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.tag == "Player" && player.invulnerabilityCounter <= 0 && dyingCounter == 0)
-        {
-            MainManager.Instance.playerData.IncreaseHealth(-1 * this.healthTaken);
-            player.invulnerabilityCounter = player.invulnerabilityDuration;
-            chaseDelayCounter = chaseDelay;
-            Blink();
-        }
+        this.HandleCollision(collision.gameObject.tag);
     }
 
     private void OnTriggerEnter(Collider collider)
     {
         if (collider.tag == "Player")
         {
-            player.Bounce();
+            MainManager.Instance.playerController.Bounce();
             dyingCounter = dyingDelay;
-            Blink();
+            MainManager.Instance.playerController.Blink();
         }
     }
 
-    private void Blink()
-    {
-        if (player.invulnerabilityCounter > 0)
-        {
-            player.invulnerabilityCounter -= Time.deltaTime;
-            flashCounter -= Time.deltaTime;
-            if (flashCounter <= 0)
-            {
-                flashCounter = blinkDuration;
-                foreach (GameObject part in playerDisplay)
-                    part.SetActive(!part.activeSelf);
-            }
-            if (player.invulnerabilityCounter <= 0)
-            {
-                foreach (GameObject part in playerDisplay)
-                    part.SetActive(true);
-            }
-        }
-    }
 }

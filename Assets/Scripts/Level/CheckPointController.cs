@@ -2,13 +2,9 @@ using UnityEngine;
 
 public class CheckPointController : MonoBehaviour
 {
-    public CharacterController player;
-
-    void Start()
+    private void Start()
     {
-        player = FindObjectOfType<CharacterController>();
-
-        Transform tenthChild = transform.GetChild(7);
+        Transform tenthChild = this.transform.GetChild(7);
         tenthChild.gameObject.SetActive(false);
     }
 

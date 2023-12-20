@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public Transform player;
     private Quaternion initialRotation;
     public float verticalDistanceToPlayer = 1.5f;
     public float horizontalDistanceToPlayer = 3;
@@ -24,18 +23,15 @@ public class CameraController : MonoBehaviour
     private Vector3 lastMousePosition;
     private Vector3 defaultPosition;
     public GameObject lowestStagePoint;
-    private CharacterController characterController;
 
     void Start()
     {
-        player = PlayerController.uniqueInstance.transform;
         initialRotation = transform.rotation;
-        characterController = player.GetComponent<CharacterController>();
     }
 
     void LateUpdate()
     {
-        if (player.transform.position.y >= lowestStagePoint.transform.position.y - 1)
+        if (MainManager.Instance.playerController.transform.position.y >= lowestStagePoint.transform.position.y - 1)
         {
             if (Input.GetMouseButtonDown(1))
             {
@@ -53,29 +49,29 @@ public class CameraController : MonoBehaviour
                 mouseX = Input.mousePosition.x - lastMousePosition.x;
                 mouseY = Input.mousePosition.y - lastMousePosition.y;
 
-                transform.RotateAround(player.position, Vector3.up, mouseX * rotationSpeed * Time.deltaTime);
-                transform.RotateAround(player.position, transform.right, -mouseY * 2 * rotationSpeed * Time.deltaTime);
+                transform.RotateAround(MainManager.Instance.playerController.transform.position, Vector3.up, mouseX * rotationSpeed * Time.deltaTime);
+                transform.RotateAround(MainManager.Instance.playerController.transform.position, transform.right, -mouseY * 2 * rotationSpeed * Time.deltaTime);
 
                 lastMousePosition = Input.mousePosition;
             }
 
-            defaultPosition = new Vector3(player.position.x, player.position.y + verticalDistanceToPlayer, player.position.z - horizontalDistanceToPlayer);
+            defaultPosition = new Vector3(MainManager.Instance.playerController.transform.position.x, MainManager.Instance.playerController.transform.position.y + verticalDistanceToPlayer, MainManager.Instance.playerController.transform.position.z - horizontalDistanceToPlayer);
 
-            isVerticalMovement = Mathf.Abs(characterController.velocity.y) > 0.1f;
+            isVerticalMovement = Mathf.Abs(MainManager.Instance.playerController.characterController.velocity.y) > 0.1f;
 
             if (isVerticalMovement)
             {
-                currentLerpSpeed = characterController.isGrounded ? groundLerpSpeed : airborneLerpSpeed;
+                currentLerpSpeed = MainManager.Instance.playerController.characterController.isGrounded ? groundLerpSpeed : airborneLerpSpeed;
                 transform.position = Vector3.Lerp(transform.position, defaultPosition, Time.deltaTime * currentLerpSpeed);
             }
-            else if (Physics.Raycast(player.position, (defaultPosition - player.position).normalized, out hit, oclusionRaycastDistance))
+            else if (Physics.Raycast(MainManager.Instance.playerController.transform.position, (defaultPosition - MainManager.Instance.playerController.transform.position).normalized, out hit, oclusionRaycastDistance))
             {
                 objectHeight = hit.collider.bounds.size.y;
 
-                if (objectHeight > player.position.y * oclusionMinHeight)
+                if (objectHeight > MainManager.Instance.playerController.transform.position.y * oclusionMinHeight)
                 {
                     Vector3 targetPosition = hit.point;
-                    targetPosition.y = player.position.y + verticalDistanceToPlayer;
+                    targetPosition.y = MainManager.Instance.playerController.transform.position.y + verticalDistanceToPlayer;
                     transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * groundLerpSpeed);
                     occlusionOccurring = true;
                     transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(30f, 0f, 0f), Time.deltaTime * slerpSpeed);

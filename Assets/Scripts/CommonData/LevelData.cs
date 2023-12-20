@@ -3,23 +3,16 @@ using UnityEngine;
 
 public class LevelData
 {
-    private CharacterController player;
     private GameObject[] checkPoints;
     private bool[] visitedCheckPoints;
     private int lastCheckPointIndex;
 
-    public LevelData(CharacterController player)
+    public LevelData()
     {
-        this.player = player;
         this.lastCheckPointIndex = -1;
     }
 
     /// Getters 
-    public CharacterController GetPlayer()
-    {
-        return this.player;
-    }
-
     public GameObject GetLastCheckPoint()
     {
         return this.checkPoints[this.lastCheckPointIndex];

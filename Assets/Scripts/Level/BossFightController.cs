@@ -36,7 +36,7 @@ public class BossFightController : MonoBehaviour
     {
         if (bossObject.activeSelf)
         {
-            bossObject.transform.LookAt(PlayerController.uniqueInstance.transform);
+            bossObject.transform.LookAt(MainManager.Instance.playerController.transform);
             bossObject.transform.rotation = Quaternion.Euler(0f, bossObject.transform.rotation.eulerAngles.y, 0f);
 
             shotCounter -= Time.deltaTime;

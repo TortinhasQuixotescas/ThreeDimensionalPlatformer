@@ -2,41 +2,41 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController uniqueInstance { get; private set; }
+    // public static PlayerController uniqueInstance { get; private set; }
 
+    // Move and Rotation
+    private Vector3 movementVector;
     [SerializeField] private int moveSpeed = 8;
     [SerializeField] private int jumpSpeed = 20;
-    public float bounceSpeed;
     [SerializeField] private int rotateSpeed = 10;
     [SerializeField] private int gravityMult = 5;
-    public Animator playerAnimator;
-    [HideInInspector] public CharacterController charController;
-    private CameraController camController;
-    private Vector3 movementVector;
+    public float bounceSpeed;
     private float ySpeed;
     private float auxSpeed;
     private bool isJumping;
     private float idleTimer;
     private int idleThreshold = 10;
     private bool lastGrounded;
+
+    // Animation
+    public Animator playerAnimator;
+    [HideInInspector] public CharacterController characterController;
+    private CameraController camController;
     public GameObject jumpParticle;
     public GameObject landingParticle;
-    public float invulnerabilityDuration = 1;
-    public float invulnerabilityCounter;
     public GameObject[] modelParts;
+
+    private void Awake()
+    {
+        characterController = GetComponent<CharacterController>();
+        isJumping = false;
+        idleTimer = 0f;
+    }
 
     private void Start()
     {
         camController = FindObjectOfType<CameraController>();
         lastGrounded = true;
-    }
-
-    private void Awake()
-    {
-        uniqueInstance = this;
-        charController = GetComponent<CharacterController>();
-        isJumping = false;
-        idleTimer = 0f;
     }
 
     private void Update()
@@ -62,13 +62,11 @@ public class PlayerController : MonoBehaviour
             }
             else
                 playerAnimator.SetBool("Rest", false);
-
-
         }
 
         movementVector.y = ySpeed;
 
-        if (charController.isGrounded)
+        if (characterController.isGrounded)
         {
             jumpParticle.SetActive(false);
             if (!lastGrounded)
@@ -81,8 +79,8 @@ public class PlayerController : MonoBehaviour
                 idleTimer = 0f;
             }
         }
-        lastGrounded = charController.isGrounded;
-        charController.Move(Time.deltaTime * new Vector3(movementVector.x * moveSpeed, movementVector.y, movementVector.z * moveSpeed));
+        lastGrounded = characterController.isGrounded;
+        characterController.Move(Time.deltaTime * new Vector3(movementVector.x * moveSpeed, movementVector.y, movementVector.z * moveSpeed));
         auxSpeed = new Vector3(movementVector.x, 0, movementVector.z).magnitude * moveSpeed;
         playerAnimator.SetFloat("Speed", auxSpeed);
         playerAnimator.SetBool("Jump", isJumping);
@@ -90,7 +88,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!charController.isGrounded)
+        if (!characterController.isGrounded)
             movementVector.y += Physics.gravity.y * gravityMult * Time.deltaTime;
         else
         {
@@ -102,13 +100,33 @@ public class PlayerController : MonoBehaviour
     public void Bounce()
     {
         movementVector.y = bounceSpeed;
-        charController.Move(Vector3.up * bounceSpeed * Time.deltaTime);
+        characterController.Move(Vector3.up * bounceSpeed * Time.deltaTime);
         // playerAnimator.SetBool("Jump", isJumping);
     }
 
     public GameObject[] GetModelParts()
     {
         return modelParts;
+    }
+
+    public void Blink()
+    {
+        if (MainManager.Instance.playerData.invulnerabilityCounter > 0)
+        {
+            MainManager.Instance.playerData.invulnerabilityCounter -= Time.deltaTime;
+            MainManager.Instance.playerData.flashCounter -= Time.deltaTime;
+            if (MainManager.Instance.playerData.flashCounter <= 0)
+            {
+                MainManager.Instance.playerData.flashCounter = MainManager.Instance.playerData.blinkDuration;
+                foreach (GameObject part in modelParts)
+                    part.SetActive(!part.activeSelf);
+            }
+            if (MainManager.Instance.playerData.invulnerabilityCounter <= 0)
+            {
+                foreach (GameObject part in modelParts)
+                    part.SetActive(true);
+            }
+        }
     }
 
 }
