@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainManager : MonoBehaviour
 {
+    private float TIME_LIMIT = 5f;
     public static MainManager Instance;
 
     // Player Data
@@ -39,7 +41,7 @@ public class MainManager : MonoBehaviour
     {
         Cursor.visible = false;
         Time.timeScale = 1;
-        LoadLevel(1);
+        StartCoroutine(LoadLevel(0));
     }
 
     public void FinishGame(bool victory)
@@ -56,47 +58,46 @@ public class MainManager : MonoBehaviour
     }
 
     /// Level Manipulation 
-    IEnumerator LoadAsyncLevel(string sceneName)
+    IEnumerator LoadAsyncLevel(string sceneName, LoadSceneMode mode)
     {
         // Load level scene
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, mode);
         asyncLoad.allowSceneActivation = false;
+        float time = 0;
         while (!asyncLoad.isDone)
         {
             if (asyncLoad.progress >= 0.9f)
                 asyncLoad.allowSceneActivation = true;
+            time += Time.deltaTime;
+            if (time > TIME_LIMIT)
+                break;
             yield return null;
         }
+    }
+
+    public IEnumerator LoadLevel(int levelNumber)
+    {
+        string sceneName = "";
+        switch (levelNumber)
+        {
+            case 0:
+                sceneName = "TestArea";
+                break;
+            default:
+                sceneName = "TestArea";
+                break;
+        }
+
+        yield return StartCoroutine(LoadAsyncLevel(sceneName, LoadSceneMode.Single));
         this.player = GameObject.FindGameObjectWithTag("Player");
         this.playerController = this.player.GetComponent<PlayerController>();
         this.playerData = new PlayerData(this.maxHealth, this.invulnerabilityDuration, this.blinkDuration);
         this.currentLevel = new LevelData();
         this.currentLevel.InitializeCheckPoints(GameObject.FindGameObjectsWithTag("CheckPoint"));
 
-        // Load interface scene
-        asyncLoad = SceneManager.LoadSceneAsync("Interface", LoadSceneMode.Additive);
-        asyncLoad.allowSceneActivation = false;
-        while (!asyncLoad.isDone)
-        {
-            if (asyncLoad.progress >= 0.9f)
-                asyncLoad.allowSceneActivation = true;
-            yield return null;
-        }
+        yield return StartCoroutine(LoadAsyncLevel("Interface", LoadSceneMode.Additive));
         this.levelInterfaceCanvas = GameObject.FindGameObjectWithTag("LevelInterfaceCanvas");
         this.levelInterfaceController = this.levelInterfaceCanvas.GetComponent<LevelInterfaceController>();
-    }
-
-    public void LoadLevel(int levelNumber)
-    {
-        switch (levelNumber)
-        {
-            case 1:
-                StartCoroutine(LoadAsyncLevel("TestArea"));
-                break;
-            default:
-                StartCoroutine(LoadAsyncLevel("TestArea"));
-                break;
-        }
     }
 
     public void Respawn()
