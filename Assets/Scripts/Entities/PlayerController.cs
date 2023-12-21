@@ -106,7 +106,7 @@ public class PlayerController : MonoBehaviour
 
     public void Blink()
     {
-        if (MainManager.Instance.playerData.invulnerabilityCounter > 0)
+        if (MainManager.Instance.playerData != null && MainManager.Instance.playerData.invulnerabilityCounter > 0)
         {
             MainManager.Instance.playerData.invulnerabilityCounter -= Time.deltaTime;
             MainManager.Instance.playerData.flashCounter -= Time.deltaTime;

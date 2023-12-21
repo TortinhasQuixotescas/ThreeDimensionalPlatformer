@@ -53,6 +53,9 @@ public class EnemyController : ThreatController
 
     private void Update()
     {
+        if (MainManager.Instance.playerController == null)
+            return;
+
         if (dyingCounter > 0)
         {
             dyingCounter -= Time.deltaTime;
@@ -172,10 +175,11 @@ public class EnemyController : ThreatController
     new private void OnTriggerEnter(Collider collider)
     {
         if (collider.CompareTag("Player"))
-        {
+        { // Player kills enemy
             MainManager.Instance.playerController.Bounce();
             dyingCounter = dyingDelay;
             MainManager.Instance.playerController.Blink();
+            MainManager.Instance.currentLevelData.IncreaseEnemiesKilled(1);
         }
     }
 

@@ -10,6 +10,8 @@ TagManager:
   - Boss
   - OverlayInterfaceCanvas
   - GameOverInterfaceCanvas
+  - LevelInitializer
+  - PlayerInterfaceCanvas
   layers:
   - Default
   - TransparentFX

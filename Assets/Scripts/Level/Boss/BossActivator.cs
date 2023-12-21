@@ -8,7 +8,7 @@ public class BossActivator : MonoBehaviour
     {
         if (collider.CompareTag("Player"))
         {
-            MainManager.Instance.currentLevel.SetFinalCheckPointActive(false);
+            MainManager.Instance.currentLevelData.SetFinalCheckPointActive(false);
             this.boss.SetActive(true);
             this.gameObject.SetActive(false);
         }

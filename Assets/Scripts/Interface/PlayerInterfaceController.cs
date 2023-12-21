@@ -39,13 +39,6 @@ public class PlayerInterfaceController : MonoBehaviour
         this.UpdateBossHealth();
     }
 
-    public void ShowFinishGamePanel(bool victory)
-    {
-        // TMP_Text title = this.FinishGamePanel.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
-        // title.SetText(victory ? "You Won!" : "Game Over");
-        // this.FinishGamePanel.SetActive(true);
-    }
-
     private void UpdateHearts(int currentHealth)
     {
         for (int i = 0; i < hearts.Count; i++)
@@ -68,7 +61,12 @@ public class PlayerInterfaceController : MonoBehaviour
 
     private void UpdateBossHealth()
     {
-        float fillAmount = (float)MainManager.Instance.currentLevel.GetBossHealth() / (float)MainManager.Instance.currentLevel.GetBossMaxHealth();
+        if (MainManager.Instance.currentLevelData.GetBossMaxHealth() <= 0)
+        {
+            this.bossHealthPanel.SetActive(false);
+            return;
+        }
+        float fillAmount = (float)MainManager.Instance.currentLevelData.GetBossHealth() / (float)MainManager.Instance.currentLevelData.GetBossMaxHealth();
         if (fillAmount <= 0)
         {
             fillAmount = 0;

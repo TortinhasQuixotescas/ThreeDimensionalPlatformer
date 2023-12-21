@@ -1,6 +1,20 @@
 using System;
 using UnityEngine;
 
+public struct LevelInfo
+{
+    public DataItem_Int bossHealth;
+    public DataItem_Int enemies;
+    public DataItem_Int coins;
+
+    public LevelInfo(DataItem_Int bossHealth, DataItem_Int enemies, DataItem_Int coins)
+    {
+        this.bossHealth = bossHealth;
+        this.enemies = enemies;
+        this.coins = coins;
+    }
+}
+
 public class LevelData
 {
     private GameObject[] checkPoints;
@@ -10,7 +24,7 @@ public class LevelData
     private DataItem_Int enemiesKilled;
     private DataItem_Int coinsCollected;
 
-    public LevelData(int maxBosshealth, int maxCoins, int maxEnemies)
+    public LevelData(int maxBosshealth, int maxEnemies, int maxCoins)
     {
         this.lastVisitedCheckPointIndex = -1;
         this.bossHealth = new DataItem_Int(0, maxBosshealth);
@@ -18,7 +32,19 @@ public class LevelData
         this.coinsCollected = new DataItem_Int(0, maxCoins);
     }
 
-    /// Getters 
+    /// Getters
+
+    public LevelInfo GetLevelInfo()
+    {
+        LevelInfo levelInfo = new LevelInfo
+        {
+            bossHealth = this.bossHealth,
+            enemies = this.enemiesKilled,
+            coins = this.coinsCollected,
+        };
+        return levelInfo;
+    }
+
     public GameObject GetLastVisitedCheckPoint()
     {
         return this.checkPoints[this.lastVisitedCheckPointIndex];
@@ -123,6 +149,16 @@ public class LevelData
     public void DecreaseBossHealth()
     {
         this.bossHealth.IncreaseCurrentQuantity(-1);
+    }
+
+    public void IncreaseEnemiesKilled(int quantity)
+    {
+        this.enemiesKilled.IncreaseCurrentQuantity(quantity);
+    }
+
+    public void IncreaseCoins(int quantity)
+    {
+        this.coinsCollected.IncreaseCurrentQuantity(quantity);
     }
 
 }

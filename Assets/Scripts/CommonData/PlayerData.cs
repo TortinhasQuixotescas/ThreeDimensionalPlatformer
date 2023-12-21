@@ -50,6 +50,7 @@ public class PlayerData
     public void IncreaseCoins(int increaseAmount)
     {
         this.coins.IncreaseCurrentQuantity(increaseAmount);
+        MainManager.Instance.currentLevelData.IncreaseCoins(increaseAmount);
     }
 
     public void ResetInvulnerabilityCounter()

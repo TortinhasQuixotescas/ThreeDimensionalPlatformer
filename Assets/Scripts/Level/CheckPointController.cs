@@ -21,7 +21,7 @@ public class CheckPointController : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            bool hasBeenVisited = MainManager.Instance.currentLevel.SetCheckPointAsVisited(this.gameObject);
+            bool hasBeenVisited = MainManager.Instance.currentLevelData.SetCheckPointAsVisited(this.gameObject);
             if (!hasBeenVisited)
             {
                 this.SetAsShiny();

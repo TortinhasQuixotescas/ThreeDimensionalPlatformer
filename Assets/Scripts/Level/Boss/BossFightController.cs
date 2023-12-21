@@ -25,7 +25,7 @@ public class BossFightController : MonoBehaviour
     private void Start()
     {
         this.spawnPoints = this.spawnPointsContainer.GetComponentsInChildren<Transform>();
-        MainManager.Instance.currentLevel.StartBossFight();
+        MainManager.Instance.currentLevelData.StartBossFight();
         AppearingAnimation();
         shotCounter = shotDelay;
     }
@@ -44,7 +44,7 @@ public class BossFightController : MonoBehaviour
                 if (appearingShotEffect != null)
                     Instantiate(appearingShotEffect, shotOrigin.position, shotOrigin.rotation);
 
-                shotDelay = Random.Range(0.5f, 1.5f) / (6 - MainManager.Instance.currentLevel.GetBossHealth());
+                shotDelay = Random.Range(0.5f, 1.5f) / (6 - MainManager.Instance.currentLevelData.GetBossHealth());
                 shotCounter = shotDelay;
             }
 
@@ -56,8 +56,8 @@ public class BossFightController : MonoBehaviour
 
     public void DamageBoss()
     {
-        MainManager.Instance.currentLevel.DecreaseBossHealth();
-        if (MainManager.Instance.currentLevel.GetBossHealth() <= 0)
+        MainManager.Instance.currentLevelData.DecreaseBossHealth();
+        if (MainManager.Instance.currentLevelData.GetBossHealth() <= 0)
             StartCoroutine(EndBattle());
         else
             StartCoroutine(DelayedSpawn());
@@ -101,7 +101,7 @@ public class BossFightController : MonoBehaviour
         bossObject.SetActive(false);
         AppearingAnimation();
         yield return new WaitForSeconds(1);
-        MainManager.Instance.currentLevel.SetFinalCheckPointActive(true);
+        MainManager.Instance.currentLevelData.SetFinalCheckPointActive(true);
         gameObject.SetActive(false);
     }
 
