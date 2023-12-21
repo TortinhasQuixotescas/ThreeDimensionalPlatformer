@@ -22,8 +22,8 @@ public class MainManager : MonoBehaviour
     public bool respawning;
     public float respawnDelay = 0.5f;
     public LevelData currentLevel;
-    public GameObject levelInterfaceCanvas;
-    private LevelInterfaceController levelInterfaceController;
+    public GameObject overlayInterfaceCanvas;
+    private OverlayInterfaceController overlayInterfaceController;
     public int currentLevelIndex = 0;
 
     private void Awake()
@@ -111,8 +111,8 @@ public class MainManager : MonoBehaviour
         this.currentLevel.InitializeCheckPoints(GameObject.FindGameObjectsWithTag("CheckPoint"));
 
         yield return StartCoroutine(LoadAsyncLevel("Interface", LoadSceneMode.Additive));
-        this.levelInterfaceCanvas = GameObject.FindGameObjectWithTag("LevelInterfaceCanvas");
-        this.levelInterfaceController = this.levelInterfaceCanvas.GetComponent<LevelInterfaceController>();
+        this.overlayInterfaceCanvas = GameObject.FindGameObjectWithTag("OverlayInterfaceCanvas");
+        this.overlayInterfaceController = this.overlayInterfaceCanvas.GetComponent<OverlayInterfaceController>();
     }
 
     public void Respawn()
@@ -127,12 +127,12 @@ public class MainManager : MonoBehaviour
     public IEnumerator RespawnCoroutine()
     {
         // Disable player
-        this.playerController.characterController.gameObject.SetActive(false);
-        this.levelInterfaceController.FadeOut();
+        playerController.characterController.gameObject.SetActive(false);
+        overlayInterfaceController.FadeOut();
         yield return new WaitForSeconds(respawnDelay);
 
         // Move player to last checkpoint
-        this.playerController.characterController.transform.position = currentLevel.GetLastVisitedCheckPoint().transform.position;
+        playerController.characterController.transform.position = currentLevel.GetLastVisitedCheckPoint().transform.position;
 
         // Heal player
         int coins = playerData.GetCoinsQuantity();
@@ -146,8 +146,8 @@ public class MainManager : MonoBehaviour
         playerData.IncreaseHealth(healedHealth);
         playerData.IncreaseCoins(-spentCoins);
 
-        this.playerController.characterController.gameObject.SetActive(true);
-        this.levelInterfaceController.FadeIn();
+        playerController.characterController.gameObject.SetActive(true);
+        overlayInterfaceController.FadeIn();
         respawning = false;
     }
 

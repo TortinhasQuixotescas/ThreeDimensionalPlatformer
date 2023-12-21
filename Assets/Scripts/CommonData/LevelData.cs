@@ -7,11 +7,15 @@ public class LevelData
     private bool[] visitedCheckPoints;
     private int lastVisitedCheckPointIndex;
     private DataItem_Int bossHealth;
+    private DataItem_Int enemiesKilled;
+    private DataItem_Int coinsCollected;
 
-    public LevelData()
+    public LevelData(int maxBosshealth, int maxCoins, int maxEnemies)
     {
         this.lastVisitedCheckPointIndex = -1;
-        this.bossHealth = new DataItem_Int(0, 5);
+        this.bossHealth = new DataItem_Int(0, maxBosshealth);
+        this.enemiesKilled = new DataItem_Int(0, maxEnemies);
+        this.coinsCollected = new DataItem_Int(0, maxCoins);
     }
 
     /// Getters 

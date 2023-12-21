@@ -1,7 +1,7 @@
 using UnityEngine.UI;
 using UnityEngine;
 
-public class LevelInterfaceController : MonoBehaviour
+public class OverlayInterfaceController : MonoBehaviour
 {
     public Image darkScreen;
     public float fadeSpeed = 2f;
@@ -32,4 +32,5 @@ public class LevelInterfaceController : MonoBehaviour
         fadingIn = true;
         fadingOut = false;
     }
+
 }

@@ -7,7 +7,9 @@ TagManager:
   - CheckPoint
   - Enemy
   - PowerUp
-  - LevelInterfaceCanvas
+  - Boss
+  - OverlayInterfaceCanvas
+  - GameOverInterfaceCanvas
   layers:
   - Default
   - TransparentFX

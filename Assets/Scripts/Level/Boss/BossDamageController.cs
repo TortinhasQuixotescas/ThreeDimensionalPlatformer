@@ -8,8 +8,9 @@ public class BossDamageController : MonoBehaviour
     {
         if (collider.CompareTag("Player"))
         {
-            boss.DamageBoss();
+            this.boss.DamageBoss();
             MainManager.Instance.playerController.Bounce();
         }
     }
+
 }

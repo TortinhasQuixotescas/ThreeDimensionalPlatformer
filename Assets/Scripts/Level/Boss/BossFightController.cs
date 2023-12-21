@@ -1,36 +1,36 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BossFightController : MonoBehaviour
 {
-    public Transform[] spawnPoints;
+    // Objects
     public GameObject bossObject;
-    public float spawnDelay;
-    private int nextPoint;
-    public float maxAliveTime = 10;
-    private int lastSpawn;
-    private Vector3 aux;
+    public GameObject spawnPointsContainer;
+    private Transform[] spawnPoints;
+
+    // Spawn
     public GameObject appearingEffect;
+    public float maxAliveTime = 10;
+    public float spawnDelay;
     public float animationOffset;
+    private Vector3 aux;
+
+    // Shot
     public GameObject shot;
     public GameObject appearingShotEffect;
     public Transform shotOrigin;
     public float shotDelay;
     private float shotCounter;
 
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
+        this.spawnPoints = this.spawnPointsContainer.GetComponentsInChildren<Transform>();
         MainManager.Instance.currentLevel.StartBossFight();
-        lastSpawn = 0;
         AppearingAnimation();
         shotCounter = shotDelay;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (bossObject.activeSelf)
         {
@@ -48,12 +48,10 @@ public class BossFightController : MonoBehaviour
                 shotCounter = shotDelay;
             }
 
-
             maxAliveTime -= Time.deltaTime;
             if (maxAliveTime <= 0)
-                NoDelaySpawn();
+                InstantSpawn();
         }
-
     }
 
     public void DamageBoss()
@@ -62,47 +60,32 @@ public class BossFightController : MonoBehaviour
         if (MainManager.Instance.currentLevel.GetBossHealth() <= 0)
             StartCoroutine(EndBattle());
         else
-            StartCoroutine(Spawn());
-
+            StartCoroutine(DelayedSpawn());
     }
 
-    private IEnumerator Spawn()
+    private IEnumerator DelayedSpawn()
     {
         bossObject.SetActive(false);
-
         AppearingAnimation();
-        yield return new WaitForSeconds(spawnDelay);
+        yield return new WaitForSeconds(this.spawnDelay);
+        this.Spawn();
+    }
 
-        do
-        {
-            nextPoint = Random.Range(0, spawnPoints.Length);
-        }
-        while (nextPoint == lastSpawn);
-        lastSpawn = nextPoint;
-        bossObject.transform.position = spawnPoints[nextPoint].position;
+    private void InstantSpawn()
+    {
+        this.bossObject.SetActive(false);
+        this.AppearingAnimation();
+        this.Spawn();
+    }
 
+    private void Spawn()
+    {
+        int nextSpawnPointIndex = Random.Range(0, this.spawnPoints.Length);
+        this.bossObject.transform.localPosition = spawnPoints[nextSpawnPointIndex].localPosition;
         AppearingAnimation();
         bossObject.SetActive(true);
         maxAliveTime = 10;
     }
-
-    private void NoDelaySpawn()
-    {
-        bossObject.SetActive(false);
-
-        AppearingAnimation();
-        do
-        {
-            nextPoint = Random.Range(0, spawnPoints.Length);
-        }
-        while (nextPoint == lastSpawn);
-        lastSpawn = nextPoint;
-        bossObject.transform.position = spawnPoints[nextPoint].position;
-        AppearingAnimation();
-        bossObject.SetActive(true);
-        maxAliveTime = 10;
-    }
-
 
     private void AppearingAnimation()
     {
@@ -121,4 +104,5 @@ public class BossFightController : MonoBehaviour
         MainManager.Instance.currentLevel.SetFinalCheckPointActive(true);
         gameObject.SetActive(false);
     }
+
 }
