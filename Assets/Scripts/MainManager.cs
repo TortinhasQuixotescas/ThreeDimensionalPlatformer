@@ -14,7 +14,7 @@ public class MainManager : MonoBehaviour
     public PlayerController playerController;
     public int healingCost = 10;
     public int maxPlayerHealth = 6;
-    public int invulnerabilityDuration = 2;
+    public int invulnerabilityDuration = 1;
     public float blinkDuration = 0.1f;
 
     // Level Data
@@ -147,6 +147,9 @@ public class MainManager : MonoBehaviour
         // Disable player
         playerController.characterController.gameObject.SetActive(false);
         overlayInterfaceController.FadeOut();
+
+        AudioManager.instance.PlaySFX(10);
+
         yield return new WaitForSeconds(respawnDelay);
 
         // Move player to last checkpoint

@@ -28,6 +28,7 @@ public class BossFightController : MonoBehaviour
         MainManager.Instance.currentLevelData.StartBossFight();
         AppearingAnimation();
         shotCounter = shotDelay;
+        AudioManager.instance.PlayMusic(0);
     }
 
     private void Update()
@@ -93,6 +94,7 @@ public class BossFightController : MonoBehaviour
         {
             aux = new Vector3(bossObject.transform.position.x, bossObject.transform.position.y + animationOffset, bossObject.transform.position.z);
             Instantiate(appearingEffect, aux, bossObject.transform.rotation);
+            AudioManager.instance.PlaySFX(1);
         }
     }
 
@@ -102,6 +104,7 @@ public class BossFightController : MonoBehaviour
         AppearingAnimation();
         yield return new WaitForSeconds(1);
         MainManager.Instance.currentLevelData.SetFinalCheckPointActive(true);
+        AudioManager.instance.PlayMusic(4);
         gameObject.SetActive(false);
     }
 

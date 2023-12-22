@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.4964127, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311926, g: 0.38073996, b: 0.35872683, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -286,6 +286,7 @@ GameObject:
   - component: {fileID: 267613425}
   - component: {fileID: 267613424}
   - component: {fileID: 267613428}
+  - component: {fileID: 267613429}
   m_Layer: 5
   m_Name: GameOverInterfaceCanvas
   m_TagString: GameOverInterfaceCanvas
@@ -390,6 +391,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullStarPrefab: {fileID: 8752515348224359962, guid: 0c306f78b6ce6cea5b01da80f57271ca, type: 3}
   emptyStarPrefab: {fileID: 1512021607604495652, guid: 4fc5073deea6a8c2db08a6135c461f45, type: 3}
+--- !u!81 &267613429
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267613422}
+  m_Enabled: 1
 --- !u!224 &343500654 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 400725973633422777, guid: 0cc5f928616b71523a02e133e8c49d09, type: 3}

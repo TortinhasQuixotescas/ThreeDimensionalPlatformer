@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    private Quaternion initialRotation;
+    [SerializeField] private Quaternion initialRotation;
     public float verticalDistanceToPlayer = 1.5f;
     public float horizontalDistanceToPlayer = 3;
     public float oclusionRaycastDistance = 5f;
@@ -31,6 +31,7 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
+        if (MainManager.Instance.playerController == null) { return; }
         if (MainManager.Instance.playerController.transform.position.y >= lowestStagePoint.transform.position.y - 1)
         {
             if (Input.GetMouseButtonDown(1))

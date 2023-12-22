@@ -16,18 +16,16 @@ public class PrizeController : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.CompareTag("Player"))
+        if (!this.storage.IsEmpty() && collider.CompareTag("Player"))
         {
-            if (!this.storage.IsEmpty())
+            if (pickUpEffect != null)
+                Instantiate(pickUpEffect, transform.position, Quaternion.identity);
+            MainManager.Instance.playerData.IncreaseCoins(this.coinsGiven);
+            this.storage.IncreaseCurrentQuantity(-1);
+            if (this.vanishWhenEmpty && this.storage.IsEmpty())
             {
-                if (pickUpEffect != null)
-                    Instantiate(pickUpEffect, transform.position, Quaternion.identity);
-                MainManager.Instance.playerData.IncreaseCoins(this.coinsGiven);
-                this.storage.IncreaseCurrentQuantity(-1);
-                if (this.vanishWhenEmpty && this.storage.IsEmpty())
-                {
-                    Destroy(this.gameObject);
-                }
+                AudioManager.instance.PlaySFXPitched(4);
+                Destroy(this.gameObject);
             }
         }
     }

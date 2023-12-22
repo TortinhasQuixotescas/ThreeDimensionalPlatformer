@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.4964127, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657832, g: 0.49641222, b: 0.57481664, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4647,7 +4647,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56a69d1bafe9141cd86a348cac3730e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  verticalDistanceToPlayer: 2
+  initialRotation: {x: 0, y: 0, z: 0, w: 0}
+  verticalDistanceToPlayer: 3
   horizontalDistanceToPlayer: 6
   oclusionRaycastDistance: 5
   groundLerpSpeed: 5
@@ -9044,9 +9045,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1245003456}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.5, z: 2}
+  m_LocalScale: {x: 7.2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1165528042}
@@ -15005,7 +15006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85ba558c84fc941c4b5099a65956a989, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossHealth: 1
+  bossHealth: 5
   enemiesQuantity: 1
   coinsQuantity: 60
 --- !u!4 &1524407802
@@ -15234,6 +15235,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 344255852}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1567036824
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1567036825}
+  m_Layer: 0
+  m_Name: Crates
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1567036825
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567036824}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.5099983, y: 3.600047, z: 30.677078}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1570863887
 PrefabInstance:
@@ -17602,7 +17634,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2894882529818912799, guid: 319fece800e21780a9bd742c4b8d7d46, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2894882529818912799, guid: 319fece800e21780a9bd742c4b8d7d46, type: 3}
       propertyPath: m_LocalRotation.w
@@ -23818,3 +23850,4 @@ SceneRoots:
   - {fileID: 101879636}
   - {fileID: 1834984133}
   - {fileID: 147435601}
+  - {fileID: 1567036825}

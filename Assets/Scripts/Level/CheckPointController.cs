@@ -13,8 +13,8 @@ public class CheckPointController : MonoBehaviour
     private void Start()
     {
         this.type = CheckPointType.Common;
-        Transform tenthChild = this.transform.GetChild(7);
-        tenthChild.gameObject.SetActive(false);
+        Transform lightPoint = this.transform.GetChild(7);
+        lightPoint.gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -25,10 +25,12 @@ public class CheckPointController : MonoBehaviour
             if (!hasBeenVisited)
             {
                 this.SetAsShiny();
+                AudioManager.instance.PlaySFX(3);
             }
 
             if (this.type == CheckPointType.Final)
             {
+                AudioManager.instance.PlaySFX(8);
                 MainManager.Instance.LoadNextLevel();
             }
         }

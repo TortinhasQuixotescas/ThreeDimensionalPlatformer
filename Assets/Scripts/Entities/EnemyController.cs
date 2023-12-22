@@ -65,6 +65,7 @@ public class EnemyController : ThreatController
             {
                 if (deathEffect != null)
                     Instantiate(deathEffect, transform.position, Quaternion.identity);
+                AudioManager.instance.PlaySFX(6);
                 Destroy(gameObject);
             }
         }
@@ -178,6 +179,7 @@ public class EnemyController : ThreatController
         { // Player kills enemy
             MainManager.Instance.playerController.Bounce();
             dyingCounter = dyingDelay;
+            AudioManager.instance.PlaySFX(7);
             MainManager.Instance.playerController.Blink();
             MainManager.Instance.currentLevelData.IncreaseEnemiesKilled(1);
         }

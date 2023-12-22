@@ -77,6 +77,7 @@ public class PlayerController : MonoBehaviour
                 movementVector.y = jumpSpeed;
                 jumpParticle.SetActive(true);
                 idleTimer = 0f;
+                AudioManager.instance.PlaySFXPitched(11);
             }
         }
         lastGrounded = characterController.isGrounded;

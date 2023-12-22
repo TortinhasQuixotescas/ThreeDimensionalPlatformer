@@ -11,6 +11,7 @@ public class ThreatController : MonoBehaviour
             MainManager.Instance.playerData.IncreaseHealth(-1 * MainManager.Instance.playerData.GetMaxHealthValue());
         if (MainManager.Instance.playerData.invulnerabilityCounter <= 0)
         {
+            AudioManager.instance.PlaySFX(12);
             MainManager.Instance.playerData.IncreaseHealth(-1 * this.healthTaken);
             MainManager.Instance.playerData.ResetInvulnerabilityCounter();
             MainManager.Instance.playerController.Blink();

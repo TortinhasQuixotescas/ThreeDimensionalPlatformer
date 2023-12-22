@@ -15,6 +15,7 @@ public class BossShotController : ThreatController
     {
         transform.LookAt(MainManager.Instance.playerController.transform.position + Vector3.up);
         startingPosition = transform.position;
+        AudioManager.instance.PlaySFXPitched(0);
     }
 
     private void Update()

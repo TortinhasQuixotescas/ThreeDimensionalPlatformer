@@ -1,9 +1,15 @@
 using UnityEngine;
+using UnityEngine.Video;
 
 public class MainMenuController : MonoBehaviour
 {
     public GameObject creditsScreen;
 
+
+    void Start()
+    {
+        AudioManager.instance.PlayMusic(3);
+    }
     public void StartGame()
     {
         MainManager.Instance.RestartGame();
