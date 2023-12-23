@@ -9,6 +9,6 @@ public class LevelInitializer : MonoBehaviour
     private void Start()
     {
         MainManager.Instance.currentLevelData = new LevelData(this.bossHealth, this.enemiesQuantity, this.coinsQuantity);
-        AudioManager.instance.PlayMusic(1);
+        AudioManager.instance.PlayMusic(2);
     }
 }

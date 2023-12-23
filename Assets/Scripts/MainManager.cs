@@ -18,7 +18,7 @@ public class MainManager : MonoBehaviour
     public float blinkDuration = 0.1f;
 
     // Level Data
-    private int levelsQuantity = 4;
+    private int levelsQuantity = 3;
     public LevelInfo[] levelsInfo;
     public LevelData currentLevelData;
     private int currentLevelNumber = 0;
