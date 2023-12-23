@@ -13,7 +13,7 @@ public class GameOverInterfaceController : MonoBehaviour
     private TMP_Text[] enemiesTMPText;
     private TMP_Text[] coinsTMPText;
     private List<Image>[] stars;
-    private int levelQuantity = 4;
+    private int levelQuantity = 3;
     private int starsQuantity = 3;
 
     private void Start()

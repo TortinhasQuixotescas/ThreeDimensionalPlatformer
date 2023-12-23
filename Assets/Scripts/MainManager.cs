@@ -78,9 +78,6 @@ public class MainManager : MonoBehaviour
         this.currentLevelNumber++;
         switch (this.currentLevelNumber)
         {
-            case 0:
-                this.currentLevelName = "TestArea";
-                break;
             case 1:
                 this.currentLevelName = "Level_1";
                 break;
@@ -89,9 +86,6 @@ public class MainManager : MonoBehaviour
                 break;
             case 3:
                 this.currentLevelName = "Level_3";
-                break;
-            case 4:
-                this.currentLevelName = "Level_4";
                 break;
             default:
                 this.FinishGame(true);
